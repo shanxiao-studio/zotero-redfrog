@@ -1457,6 +1457,7 @@ export class UIExampleFactory {
 
   @example //Tools菜单
   static registerWindowMenuWithSeprator() {
+    const menuIconUpIFs = `chrome://${config.addonRef}/content/icons/favicon@0.5x.png`;
     ztoolkit.Menu.register("menuTools", {
       tag: "menuseparator",
     });
@@ -1479,6 +1480,7 @@ export class UIExampleFactory {
     ztoolkit.Menu.register("menuTools", {
       tag: "menu",
       label: getString("toolbox"),
+      icon: menuIconUpIFs,
       onpopupshowing: `Zotero.${config.addonInstance}.hooks.hideMenu()`, // 显示隐藏菜单
 
       children: [
@@ -1609,6 +1611,7 @@ export class UIExampleFactory {
       tag: "menuitem",
       label: getString("cleanExtra"),
       commandListener: (ev) => HelperExampleFactory.emptyExtra(),
+      icon: menuIconUpIFs,
     });
   }
 
