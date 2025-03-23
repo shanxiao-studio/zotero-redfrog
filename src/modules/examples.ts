@@ -72,13 +72,13 @@ export class BasicExampleFactory {
     // 增加条目时 更新
     const addUpdate = getPref(`add.update`);
     // 增加条目时 更新 条目题目改为句首字母大写
-    const addItemTieleSentenceCase = getPref("update.title.sentence.case");
+    const addItemTitleSentenceCase = getPref("update.title.sentence.case");
 
     if (addUpdate) {
       await KeyExampleFactory.setExtra(regularItems);
     }
 
-    if (addItemTieleSentenceCase) {
+    if (addItemTitleSentenceCase) {
       HelperExampleFactory.chanItemTitleCaseDo(regularItems);
       // await KeyExampleFactory.setExtra(regularItems);
     }
@@ -345,7 +345,8 @@ export class KeyExampleFactory {
             if (eii && easyscholarData["eii"]) {
               ztoolkit.ExtraField.setExtraField(item, "EI", "是");
             }
-            if (sciUpTop && easyscholarData["sciUpTop"]) {
+            //if (sciUpTop && easyscholarData["sciUpTop"]) {
+            if (sciUpTop) {
               ztoolkit.ExtraField.setExtraField(
                 item,
                 "中科院升级版Top分区",
@@ -440,7 +441,8 @@ export class KeyExampleFactory {
               );
             }
             // SCI预警 sci warn
-            if (sciwarn && easyscholarData["sciwarn"]) {
+            //if (sciwarn && easyscholarData["sciwarn"]) {
+            if (sciwarn) {
               ztoolkit.ExtraField.setExtraField(
                 item,
                 "中科院预警",
