@@ -595,7 +595,7 @@ function bindPrefEvents() {
   // 题目改为句首字母大写
   addon.data
     .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-shortcut-title-sentence`,
+      `#zotero-prefpane-${config.addonRef}-shortcut-title-sentence-case`,
     )
     ?.addEventListener("command", (e) => {
       ztoolkit.log(e);
@@ -604,7 +604,7 @@ function bindPrefEvents() {
   // 题目改为句首字母大写快捷键
   addon.data
     .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-shortcut-input-title-sentence`,
+      `#zotero-prefpane-${config.addonRef}-shortcut-input-title-sentence-case`,
     )
     ?.addEventListener("change", (e) => {
       ztoolkit.log(e);

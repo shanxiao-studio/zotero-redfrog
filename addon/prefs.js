@@ -5,8 +5,9 @@ pref("extensions.zotero.__addonRef__.input", "This is input");
 pref("extensions.zotero.__addonRef__.secretkey", "");
 // 期刊缩写
 pref("extensions.zotero.__addonRef__.update.empty.extra", false);
-pref("extensions.zotero.__addonRef__.update.title.sentence.case", true);
 pref("extensions.zotero.__addonRef__.add.update", false);
+pref("extensions.zotero.__addonRef__.update.title.sentence.case", true);
+pref("extensions.zotero.__addonRef__.update.publication.title.case", false);
 pref("extensions.zotero.__addonRef__.update.abbr", true);
 pref("extensions.zotero.__addonRef__.update.abbr.dot", true);
 pref("extensions.zotero.__addonRef__.en.abbr", true);
@@ -89,8 +90,8 @@ pref("extensions.zotero.__addonRef__.sep2", true);
 // 快捷键设置
 pref("extensions.zotero.__addonRef__.shortcut.update.journal.info", true);
 pref("extensions.zotero.__addonRef__.shortcut.input.update.journal.info", "J");
-pref("extensions.zotero.__addonRef__.shortcut.title.sentence", true);
-pref("extensions.zotero.__addonRef__.shortcut.input.title.sentence", "T");
+pref("extensions.zotero.__addonRef__.shortcut.title.sentence.case", true);
+pref("extensions.zotero.__addonRef__.shortcut.input.title.sentence.case", "T");
 pref("extensions.zotero.__addonRef__.shortcut.publication.title.case", true);
 pref(
   "extensions.zotero.__addonRef__.shortcut.input.publication.title.case",

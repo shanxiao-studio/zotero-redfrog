@@ -73,6 +73,8 @@ export class BasicExampleFactory {
     const addUpdate = getPref(`add.update`);
     // 增加条目时 更新 条目题目改为句首字母大写
     const addItemTitleSentenceCase = getPref("update.title.sentence.case");
+    // 增加条目时 更新 期刊题目改为词首字母大写
+    const addPubTitleCase = getPref("update.publication.title.case");
 
     if (addUpdate) {
       await KeyExampleFactory.setExtra(regularItems);
@@ -82,6 +84,11 @@ export class BasicExampleFactory {
       HelperExampleFactory.chanItemTitleCaseDo(regularItems);
       // await KeyExampleFactory.setExtra(regularItems);
     }
+
+    if (addPubTitleCase) {
+      HelperExampleFactory.chPubTitleCase();
+    }
+
     // 得到添加的条目总数
     // var items = Zotero.Items.get(ids);
     // Zotero.debug(`ccc添加条目了${ids}！`)
@@ -1157,8 +1164,8 @@ export class KeyExampleFactory {
     // 待使用新函数
     const ifUpdateJournalInfo = getPref(`shortcut.update.journal.info`);
     const keyUpdateJournalInfo = getPref(`shortcut.input.update.journal.info`);
-    const ifTitleSentence = getPref(`shortcut.title.sentence`);
-    const keyTitleSentence = getPref(`shortcut.input.title.sentence`);
+    const ifTitleSentence = getPref(`shortcut.title.sentence.case`);
+    const keyTitleSentence = getPref(`shortcut.input.title.sentence.case`);
     const ifPubTitleCase = getPref(`shortcut.publication.title.case`);
     const keyPubTitleCase = getPref(`shortcut.input.publication.title.case`);
     const ifDataDir = getPref(`shortcut.data.dir`);
