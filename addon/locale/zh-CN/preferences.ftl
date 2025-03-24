@@ -1,11 +1,7 @@
-pref-title = 插件模板设置示例
-pref-enable =
-    .label = 开启
-pref-input = 输入
-pref-help = { $name } Build { $version } { $time }
+# 期刊信息更新设置
 journal-setting = 期刊更新设置
 pref-secretkey-label = easyScholar密钥：
-pref-secretkey-apply-label = 申请easyScholar密钥
+pref-secretkey-apply-label = 目前还没有easyScholar密钥？点击注册申请密钥
 update-empty-extra =
     .label = 更新之前清空Extra
 add-update =
@@ -16,14 +12,13 @@ update-abbr =
      .label = 更新期刊缩写
 update-abbr-dot =
          .label = 期刊缩写带点
+journal-abbr = 如果以下类型条目查询不到，在期刊缩写处使用期刊全称：
 en-abbr =
- .label = 如果英文条目查询不到, 期刊缩写使用期刊全称
+    .label = 英文条目
 ch-abbr =
- .label = 如果中文条目查询不到, 期刊缩写使用期刊全称
-
+    .label = 中文条目
 
 ## 分区类型设置、影响因子设置
-
 ifs-setting = 分区与影响因子设置
 jcr-qu =
     .label = JCR分区
@@ -175,7 +170,8 @@ menu-sep-2 =
 ## 快捷键设置
 shortcut-setting = 快捷键设置
 shortcut-update-journal-info =
-    .label = 使用快捷键从easyScholar更新期刊信息（仅支持选择常规条目）:
+    .label = 使用快捷键从easyScholar更新期刊信息:
+shortcut-update-journal-info-hint = 注意：当前仅支持选择常规条目时使用该快捷键
 shortcut-title-sentence =
     .label = 使用快捷键设置题目大小写为句首字母大写:
 shortcut-publication-title-case =
@@ -184,3 +180,10 @@ shortcut-data-dir =
     .label = 使用快捷键显示数据目录:
 shortcut-profile-dir =
     .label = 使用快捷键显示配置目录:
+
+# 关于
+pref-title = 绿青蛙
+pref-about = 关于
+pref-enable =
+    .label = 开启
+pref-help = Build { $version } { $time }

@@ -1,10 +1,7 @@
-pref-title = Addon Template Example
-pref-enable =
-    .label = Enable
-pref-help = { $name } Build { $version } { $time }
+# 期刊信息更新设置
 journal-setting = Journal Update Settings
 pref-secretkey-label = easyScholar Secretkey:
-pref-secretkey-apply-label = Register easyScholar Secretkey
+pref-secretkey-apply-label = Don't have the easyScholar SecretKey Yet? Click to Register
 update-empty-extra =
     .label = Empty Extra before update
 add-update =
@@ -15,12 +12,11 @@ update-abbr =
      .label = Update journal abbreviation
 update-abbr-dot =
          .label = Journal abbreviation with dot
+journal-abbr = Replace journal abbr with publication title for these types when the journal is not found:
 en-abbr =
- .label = Use full publication title to replace journal abbreviation for English item when the journal is not found
+    .label = English items
 ch-abbr =
- .label = Use full publication title to replace journal abbreviation for Chinese item when the journal is not found
-
-
+    .label = Chinese items
 
 ## 分区类型设置、影响因子设置
 ifs-setting = Quartile and IF Settings
@@ -118,6 +114,7 @@ zju =
     .label = ZJU
 cpu =
     .label = CPU
+
 ## 自定义数据集
 custom-data = Custom Dataset
 ami =
@@ -136,7 +133,6 @@ Scopus =
     .label = Scopus
 HX =
     .label = HX
-
 
 ## 菜单显示隐藏设置
 menu-setting = Show Toolbox Menu Settings
@@ -174,7 +170,8 @@ menu-sep-2 =
 ## 快捷键设置
 shortcut-setting = Shortcut Settings
 shortcut-update-journal-info =
-    .label = Using shortcut for updating Journal Information from easyScholar (only supporting selected regular items):
+    .label = Using shortcut for updating Journal Information:
+shortcut-update-journal-info-hint = Hint: Currently only supports selected regular items
 shortcut-title-sentence =
     .label = Using shortcut for changing title to sentence case:
 shortcut-publication-title-case =
@@ -183,3 +180,10 @@ shortcut-data-dir =
     .label = Using shortcut for showing data directory:
 shortcut-profile-dir =
     .label = Using shortcut for showing profile directory:
+
+# 关于
+pref-title = Green Frog
+pref-about = About
+pref-enable =
+    .label = Enable
+pref-help = Build { $version } { $time }

@@ -11,9 +11,9 @@
       <html:h2 data-l10n-id="journal-setting"></html:h2>
     </label>
     <hbox align="center">
-      <label value=" "></label>
+      <!-- <label value=" "></label> -->
       <html:label
-        style="width: 135px"
+        style="width: 145px"
         for="zotero-prefpane-__addonRef__-secretkey"
         data-l10n-id="pref-secretkey-label"
       >
@@ -24,19 +24,23 @@
         value=""
         width="500"
         preference="extensions.zotero.__addonRef__.secretkey"
-        size="30"
+        size="40"
         style="margin-right: 15px"
       >
       </html:input>
       <!-- 空格 -->
       <!-- <label value="  "></label> -->
-      <label
-        data-l10n-id="pref-secretkey-apply-label"
-        is="zotero-text-link"
-        href="https://easyscholar.cc/"
-      ></label>
     </hbox>
-
+    <vbox class="indented-pref">
+      <hbox align="center">
+        <label
+          data-l10n-id="pref-secretkey-apply-label"
+          is="zotero-text-link"
+          href="https://easyscholar.cc/"
+          style="margin-top: 8px; margin-bottom: 8px"
+        ></label>
+      </hbox>
+    </vbox>
     <!-- 更新前清空Extra -->
     <checkbox
       id="zotero-prefpane-__addonRef__-update-empty-extra"
@@ -64,30 +68,39 @@
       native="true"
       preference="extensions.zotero.__addonRef__.update.abbr"
     />
-    <checkbox
-      id="zotero-prefpane-__addonRef__-update-abbr-dot"
-      data-l10n-id="update-abbr-dot"
-      native="true"
-      preference="extensions.zotero.__addonRef__.update.abbr.dot"
-    />
-    <checkbox
-      id="zotero-prefpane-__addonRef__-en-abbr"
-      data-l10n-id="en-abbr"
-      native="true"
-      preference="extensions.zotero.__addonRef__.en.abbr"
-    />
-    <checkbox
-      id="zotero-prefpane-__addonRef__-ch-abbr"
-      data-l10n-id="ch-abbr"
-      native="true"
-      preference="extensions.zotero.__addonRef__.ch.abbr"
-    />
+    <vbox class="indented-pref">
+      <checkbox
+        id="zotero-prefpane-__addonRef__-update-abbr-dot"
+        data-l10n-id="update-abbr-dot"
+        native="true"
+        preference="extensions.zotero.__addonRef__.update.abbr.dot"
+      />
+    </vbox>
+    <label data-l10n-id="journal-abbr" style="margin-top: 8px; margin-bottom: 8px"></label>
+    <vbox class="indented-pref">
+      <hbox align="center">
+        <checkbox
+          id="zotero-prefpane-__addonRef__-en-abbr"
+          data-l10n-id="en-abbr"
+          native="true"
+          preference="extensions.zotero.__addonRef__.en.abbr"
+        />
+        <checkbox
+          id="zotero-prefpane-__addonRef__-ch-abbr"
+          data-l10n-id="ch-abbr"
+          native="true"
+          preference="extensions.zotero.__addonRef__.ch.abbr"
+        />
+      </hbox>
+    </vbox>
+  </groupbox>
     <!-- 英文期刊 -->
     <!--还需要写入 preferenceScript.ts function bindPrefEvents函数-->
     <!-- 还需要写入examples.ts   static async registerExtraColumn 注册显示列-->
     <!-- 还需要写入examples.ts   static async setExtra写入Extra -->
     <!-- 还需要写入prefs.js写入键值 -->
     <!-- 还需要写入locale写入字符串值 -->
+  <groupbox>
     <label>
       <html:h2 data-l10n-id="ifs-setting"> </html:h2>
     </label>
@@ -278,6 +291,8 @@
         preference="extensions.zotero.__addonRef__.agg.if"
       />
     </hbox>
+  </groupbox>
+  <groupbox>
     <!-- 大学期刊分类 -->
     <label>
       <html:h2 data-l10n-id="university"> </html:h2>
@@ -462,7 +477,8 @@
         preference="extensions.zotero.__addonRef__.cpu"
       />
     </hbox>
-
+  </groupbox>
+  <groupbox>
     <!-- 自定义数据集 -->
     <label>
       <html:h2 data-l10n-id="custom-data"></html:h2>
@@ -527,7 +543,8 @@
         preference="extensions.zotero.__addonRef__.HX"
       />
     </hbox>
-
+  </groupbox>
+  <groupbox>
     <!--  菜单隐藏设置 -->
     <label>
       <html:h2 data-l10n-id="menu-setting"></html:h2>
@@ -644,7 +661,8 @@
         preference="extensions.zotero.__addonRef__.sep2"
       />
     </hbox>
-
+  </groupbox>
+  <groupbox>
     <!-- 快捷键设置 -->
     <!--preferenceScript.ts function bindPrefEvents() 绑定变化-->
     <label>
@@ -670,6 +688,9 @@
         style="margin-right: 15px"
       >
       </html:input>
+    </hbox>
+    <hbox class="indented-pref">
+      <label data-l10n-id="shortcut-update-journal-info-hint" style="margin-top: 8px; margin-bottom: 8px"></label>
     </hbox>
     <!-- 题目改为句首字母大写 -->
     <hbox align="center">
@@ -722,7 +743,7 @@
         native="true"
         preference="extensions.zotero.__addonRef__.shortcut.data.dir"
       />
-      <label value="Alt  + "></label>
+      <label value="Alt + " style="margin-left: 4.5px"></label>
       <html:input
         type="text"
         id="zotero-prefpane-__addonRef__-shortcut-input-data-dir"
@@ -743,7 +764,7 @@
         native="true"
         preference="extensions.zotero.__addonRef__.shortcut.profile.dir"
       />
-      <label value="Alt  + "></label>
+      <label value="Alt + " style="margin-left: 4.5px"></label>
       <html:input
         type="text"
         id="zotero-prefpane-__addonRef__-shortcut-input-profile-dir"
@@ -759,10 +780,24 @@
 </vbox>
 <separator id="storage-separator" class="thick" />
 <vbox>
-  <html:label
-    data-l10n-id="pref-help"
-    data-l10n-args='{"time": "__buildTime__","name": "__addonName__","version":"__buildVersion__"}'
-  ></html:label>
+  <groupbox>
+    <label>
+      <html:h2 data-l10n-id="pref-about"></html:h2>
+    </label>
+    <hbox>
+      <label
+        data-l10n-id="pref-title"
+        class="zotero-text-link"
+        is="zotero-text-link"
+        href="https://github.com/redleafnew/zotero-updateifsE"
+        style="margin-right: 4px"
+      ></label>
+      <html:label
+        data-l10n-id="pref-help"
+        data-l10n-args='{"time": "__buildTime__","name": "__addonName__","version":"__buildVersion__"}'
+      ></html:label>
+    </hbox>
+  </groupbox>
 </vbox>
 <!-- <script type="text/javascript">
   function disable() {
