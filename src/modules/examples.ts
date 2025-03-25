@@ -1553,22 +1553,6 @@ export class UIExampleFactory {
           // oncommand: "alert('Hello World! Sub Menuitem.')",
           commandListener: (ev) => HelperExampleFactory.chanItemTitleCase(),
         },
-        // Change Publication Title
-        {
-          tag: "menuitem",
-          id: "zotero-toolboxmenu-chPubTitle",
-          label: getString("chPubTitle"),
-          // oncommand: "alert('Hello World! Sub Menuitem.')",
-          commandListener: (ev) => HelperExampleFactory.dialogChPubTitle(),
-        },
-        // Change Publication Title Case 更改期刊大小写
-        {
-          tag: "menuitem",
-          id: "zotero-toolboxmenu-chPubTitleCase",
-          label: getString("chPubTitleCase"),
-          // oncommand: "alert('Hello World! Sub Menuitem.')",
-          commandListener: (ev) => HelperExampleFactory.chPubTitleCase(),
-        },
         // Item Title Find and Replace 条目题目查找替换
         {
           tag: "menuitem",
@@ -1578,6 +1562,22 @@ export class UIExampleFactory {
           // oncommand: `ztoolkit.getGlobal('alert')(${KeyExampleFactory.getSelectedItems()})`,
           commandListener: (ev) =>
             HelperExampleFactory.dialogItemTitleProcess(),
+        },
+        // Change Publication Title Case 更改期刊大小写
+        {
+          tag: "menuitem",
+          id: "zotero-toolboxmenu-chPubTitleCase",
+          label: getString("chPubTitleCase"),
+          // oncommand: "alert('Hello World! Sub Menuitem.')",
+          commandListener: (ev) => HelperExampleFactory.chPubTitleCase(),
+        },
+        // Change Publication Title
+        {
+          tag: "menuitem",
+          id: "zotero-toolboxmenu-chPubTitle",
+          label: getString("chPubTitle"),
+          // oncommand: "alert('Hello World! Sub Menuitem.')",
+          commandListener: (ev) => HelperExampleFactory.dialogChPubTitle(),
         },
         {
           tag: "menuseparator",

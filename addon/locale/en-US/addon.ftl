@@ -13,7 +13,7 @@ tabpanel-reader-tab-label = Reader Tab
 upifs = Update Journal Information from easyScholar
 upmeta= Update Item Metadata
 toolbox = Toolbox
-cleanExtra = Empty Extra Field...
+cleanExtra = Empty Extra Field…
 cleanExtraAlt=Are you sure you want to empty the Extra content(s)?
 cleanExtraSuc = Extra Field emptied.
 toolBoxSet = Show Toolbox Menu Settings
@@ -22,17 +22,15 @@ cleanBold = Clean Author Bold
 cleanStar = Clean Author Asterisk
 cleanBoldStar = Clean Author Bold and Asterisk
 chAuTitle = Change Author Name to Title Case
-swapAuName = Swap Authors First and Last Name
+swapAuName = Swap Author's First and Last Name
 chTitleCase = Change Title to Sentense Case
 chPubTitle = Change Publication Title
 chPubTitleCase = Change Publication Title Case
 itemTitleFindReplace = Item Title Find and Replace
-showProfile = Show Porfile Directory
-showData = Show Data Directory
-dataDir = The data directory is:
+showProfile = Show Zotero Porfile Directory
+showData = Show Zotero Data Directory
 proDir = The porfile directory is:
-
-
+dataDir = The data directory is:
 
 
 # 作者处理
@@ -47,8 +45,8 @@ cleanStarLabel=Clean Asterisk
 cleanBoldStarLabel=Clean Bold & Asterisk
 zeroItem = No item is selected.
 successPubTitleCase=publication(s) was(were) updated successfully. But some words need specific case, like LWT, CyTA. Please check.
-authorEmpty = Please input the author name in the above texbox.
-authorNoSpace = The input author name must have a space.
+authorEmpty = Please input the author name in the above textbox.
+authorNoSpace = The author name inputed must be separated by a space.
 authorChanged = author(s) updated.
 itemAuSwapped = item(s) author(s) first name and last name swapped.
 itemAuthorChanged = item(s) author(s) updated.
@@ -62,18 +60,18 @@ titleReplaceLabel = Replace:
 titleReplaceButton = Replace
 titleEmpty = The find or replace textbox is empty, please input.
 findRepSame = The contents you find and replace are same, please check.
-itemTitleFindRepSuc = item(s) title(s) replace completed.
+itemTitleFindRepSuc = item title(s) replace completed.
 allUpcase = The item title is all upcase, please check after the change.
-successItemTitleCase = item(s) title(s) case updated.
+successItemTitleCase = item title(s) case updated.
 #
 # 期刊题目处理
 change-pub-title = Change publication title
 change-pub-title-desc = Change publication title, for example change LWT to LWT-Food Science and Technology.
 old-pub-title  = Please input the original publication title:
-new-pub-title  = Please input the new publication:
+new-pub-title  = Please input the new publication title:
 change-title-bn  = Change Publication Title
 pubTitleEmpty = The original or the new publication title is empty, please input.
-successPubTitle = publication was updated successfully.
+successPubTitle = publication title(s) updated.
 
 # 影响因子
 inputSecretkey = Please input easyScholar secretkey in Green Frog preference.
@@ -135,7 +133,7 @@ summary = Summary
 
 upIfsSuccess =
  {$count ->
-   [one] Selected 1 item updated sucessfully.
-  *[other] { $count } items updated sucessfully.
+   [one] Journal information of the selected 1 item updated sucessfully.
+  *[other] Journal information of the selected { $count } items updated sucessfully.
   }
 upIfsFail = Could not Retrive this journal information from easyScholar.

@@ -13,24 +13,24 @@ tabpanel-reader-tab-label = 阅读器标签
 upifs = 从easyScholar更新期刊信息
 upmeta= 更新条目元数据
 toolbox = 工具箱
-cleanExtra = 清空其它内容...
-cleanExtraAlt = 您确定要清空其它内容吗？
-cleanExtraSuc = 其它字段已清空。
+cleanExtra = 清空其他字段…
+cleanExtraAlt = 您确定要清空其他字段吗？
+cleanExtraSuc = 其他字段已清空。
 toolBoxSet = 显示工具箱菜单设置
 auBoldStar = 作者加粗/加星
 cleanBold = 清除作者加粗
 cleanStar = 清除作者加星
 cleanBoldStar = 清除作者加粗加星
-chAuTitle = 更改姓名词首字母大写
+chAuTitle = 更改姓名为词首大写
 swapAuName = 交换作者姓和名
-chTitleCase = 更新题目为句首大写
+chTitleCase = 更改题目为句首大写
 chPubTitle = 更改期刊名称
 chPubTitleCase = 更改期刊为词首大写
-itemTitleFindReplace = 题目查找替换
-showProfile = 显示配置目录
-showData = 显示数据目录
-dataDir = 数据目录:
-proDir = 配置目录:
+itemTitleFindReplace = 条目题目查找替换
+showProfile = 显示Zotero配置文件目录
+showData = 显示Zotero数据文件目录
+proDir = Zotero配置文件目录:
+dataDir = Zotero数据文件目录:
 
 
 # 作者处理
@@ -69,12 +69,12 @@ successItemTitleCase = 题目大小写更新成功。
 # 期刊题目处理
 change-pub-title = 更改期刊题目
 change-pub-title-desc = 更改期刊题目, 如将LWT修改为LWT-Food Science and Technology.
-old-pub-title  = 请输入原题目:
-new-pub-title  = 请输入新题目:
+old-pub-title  = 请输入原期刊题目:
+new-pub-title  = 请输入新期刊题目:
 change-title-bn  = 更改期刊题目
 
 pubTitleEmpty = 期刊原题目或新题目为空, 请输入。
-successPubTitle = 期刊更新成功。
+successPubTitle = 期刊题目更新成功。
 
 # 影响因子
 inputSecretkey = 请在绿青蛙首选项中输入easyScholar密钥。
@@ -137,8 +137,8 @@ summary = 总结
 
 upIfsSuccess =
  {$count ->
-   [one] 所选的1个条目更新成功。
-  *[other] 所选的{ $count }个条目更新成功。
+   [one] 所选1个条目的期刊信息更新成功。
+  *[other] 所选{ $count }个条目的期刊信息更新成功。
   }
 
 upIfsFail = easyScholar查不到此期刊的等级信息。
