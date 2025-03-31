@@ -1,9 +1,9 @@
 # 期刊信息更新设置
 journal-setting = Journal Update Settings
 pref-secretkey-label = easyScholar Secretkey:
-pref-secretkey-apply-label = Don't have the easyScholar SecretKey yet? Click to register.
+pref-secretkey-apply-label = Don't have the easyScholar Secretkey yet? Click to register.
 update-empty-extra =
-    .label = Empty Extra Field before update journal information
+    .label = Empty "Extra" Field before update journal information
 add-update =
     .label = Update journal information when adding item
 update-title-sentence-case =
@@ -172,16 +172,16 @@ menu-sep-2 =
 ## 快捷键设置
 shortcut-setting = Shortcut Settings
 shortcut-update-journal-info =
-    .label = Using shortcut for updating Journal Information:
+    .label = Use shortcut for updating Journal Information:
 shortcut-update-journal-info-hint = Hint: Currently only supports selected regular items
 shortcut-title-sentence-case =
-    .label = Using shortcut for changing title to sentence case:
+    .label = Use shortcut for changing title to sentence case:
 shortcut-publication-title-case =
-    .label = Using shortcut for changing publication title to title case:
+    .label = Use shortcut for changing publication title to title case:
 shortcut-data-dir =
-    .label = Using shortcut for showing Zotero data directory:
+    .label = Use shortcut for showing Zotero data directory:
 shortcut-profile-dir =
-    .label = Using shortcut for showing Zotero profile directory:
+    .label = Use shortcut for showing Zotero profile directory:
 
 # 关于
 pref-title = Green Frog
