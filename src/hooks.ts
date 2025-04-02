@@ -6,6 +6,7 @@ import {
 import { config } from "../package.json";
 import { initLocale } from "./utils/locale";
 import { registerPrefsScripts } from "./modules/preferenceScript";
+import { registerShortcuts } from "./modules/shortcuts";
 
 async function onStartup() {
   await Promise.all([
@@ -19,7 +20,8 @@ async function onStartup() {
   BasicExampleFactory.registerPrefs();
 
   BasicExampleFactory.registerNotifier();
-  KeyExampleFactory.registerShortcuts();
+  //KeyExampleFactory.registerShortcuts();
+  registerShortcuts(); //新的注册快捷键
   await Promise.all(
     Zotero.getMainWindows().map((win) => onMainWindowLoad(win)),
   );

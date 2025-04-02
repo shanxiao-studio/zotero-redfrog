@@ -573,100 +573,100 @@ function bindPrefEvents() {
       UIExampleFactory.registerExtraColumn();
     });
 
-  // 从easyScholar更新期刊信息
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-shortcut-update-journal-info`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      KeyExampleFactory.registerShortcuts();
-    });
-  // 从easyScholar更新期刊信息快捷键
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-shortcut-input-update-journal-info`,
-    )
-    ?.addEventListener("change", (e) => {
-      ztoolkit.log(e);
-      KeyExampleFactory.registerShortcuts();
-    });
+  // // 从easyScholar更新期刊信息
+  // addon.data
+  //   .prefs!.window.document.querySelector(
+  //     `#zotero-prefpane-${config.addonRef}-shortcut-update-journal-info`,
+  //   )
+  //   ?.addEventListener("command", (e) => {
+  //     ztoolkit.log(e);
+  //     KeyExampleFactory.registerShortcuts();
+  //   });
+  // // 从easyScholar更新期刊信息快捷键
+  // addon.data
+  //   .prefs!.window.document.querySelector(
+  //     `#zotero-prefpane-${config.addonRef}-shortcut-input-update-journal-info`,
+  //   )
+  //   ?.addEventListener("change", (e) => {
+  //     ztoolkit.log(e);
+  //     KeyExampleFactory.registerShortcuts();
+  //   });
 
-  // 题目改为句首字母大写
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-shortcut-title-sentence-case`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      KeyExampleFactory.registerShortcuts();
-    });
-  // 题目改为句首字母大写快捷键
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-shortcut-input-title-sentence-case`,
-    )
-    ?.addEventListener("change", (e) => {
-      ztoolkit.log(e);
-      KeyExampleFactory.registerShortcuts();
-    });
+  // // 题目改为句首字母大写
+  // addon.data
+  //   .prefs!.window.document.querySelector(
+  //     `#zotero-prefpane-${config.addonRef}-shortcut-title-sentence-case`,
+  //   )
+  //   ?.addEventListener("command", (e) => {
+  //     ztoolkit.log(e);
+  //     KeyExampleFactory.registerShortcuts();
+  //   });
+  // // 题目改为句首字母大写快捷键
+  // addon.data
+  //   .prefs!.window.document.querySelector(
+  //     `#zotero-prefpane-${config.addonRef}-shortcut-input-title-sentence-case`,
+  //   )
+  //   ?.addEventListener("change", (e) => {
+  //     ztoolkit.log(e);
+  //     KeyExampleFactory.registerShortcuts();
+  //   });
 
-  // 期刊名称改为词首字母大写
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-shortcut-publication-title-case`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      KeyExampleFactory.registerShortcuts();
-    });
-  // 期刊名称改为词首字母大写快捷键
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-shortcut-input-publication-title-case`,
-    )
-    ?.addEventListener("change", (e) => {
-      ztoolkit.log(e);
-      KeyExampleFactory.registerShortcuts();
-    });
+  // // 期刊名称改为词首字母大写
+  // addon.data
+  //   .prefs!.window.document.querySelector(
+  //     `#zotero-prefpane-${config.addonRef}-shortcut-publication-title-case`,
+  //   )
+  //   ?.addEventListener("command", (e) => {
+  //     ztoolkit.log(e);
+  //     KeyExampleFactory.registerShortcuts();
+  //   });
+  // // 期刊名称改为词首字母大写快捷键
+  // addon.data
+  //   .prefs!.window.document.querySelector(
+  //     `#zotero-prefpane-${config.addonRef}-shortcut-input-publication-title-case`,
+  //   )
+  //   ?.addEventListener("change", (e) => {
+  //     ztoolkit.log(e);
+  //     KeyExampleFactory.registerShortcuts();
+  //   });
 
-  // 数据目录
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-shortcut-data-dir`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      KeyExampleFactory.registerShortcuts();
-    });
-  // 数据目录快捷键
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-shortcut-input-data-dir`,
-    )
-    ?.addEventListener("change", (e) => {
-      ztoolkit.log(e);
-      KeyExampleFactory.registerShortcuts();
-    });
+  // // 数据目录
+  // addon.data
+  //   .prefs!.window.document.querySelector(
+  //     `#zotero-prefpane-${config.addonRef}-shortcut-data-dir`,
+  //   )
+  //   ?.addEventListener("command", (e) => {
+  //     ztoolkit.log(e);
+  //     KeyExampleFactory.registerShortcuts();
+  //   });
+  // // 数据目录快捷键
+  // addon.data
+  //   .prefs!.window.document.querySelector(
+  //     `#zotero-prefpane-${config.addonRef}-shortcut-input-data-dir`,
+  //   )
+  //   ?.addEventListener("change", (e) => {
+  //     ztoolkit.log(e);
+  //     KeyExampleFactory.registerShortcuts();
+  //   });
 
-  // 显示配置目录快捷键
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-shortcut-profile-dir`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      KeyExampleFactory.registerShortcuts();
-    });
-  // 显示配置目录快捷键
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-shortcut-input-profile-dir`,
-    )
-    ?.addEventListener("change", (e) => {
-      ztoolkit.log(e);
-      KeyExampleFactory.registerShortcuts();
-    });
+  // // 显示配置目录快捷键
+  // addon.data
+  //   .prefs!.window.document.querySelector(
+  //     `#zotero-prefpane-${config.addonRef}-shortcut-profile-dir`,
+  //   )
+  //   ?.addEventListener("command", (e) => {
+  //     ztoolkit.log(e);
+  //     KeyExampleFactory.registerShortcuts();
+  //   });
+  // // 显示配置目录快捷键
+  // addon.data
+  //   .prefs!.window.document.querySelector(
+  //     `#zotero-prefpane-${config.addonRef}-shortcut-input-profile-dir`,
+  //   )
+  //   ?.addEventListener("change", (e) => {
+  //     ztoolkit.log(e);
+  //     KeyExampleFactory.registerShortcuts();
+  //   });
 
   // 禁用添加新条目自动更新
   (
