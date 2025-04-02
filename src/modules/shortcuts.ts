@@ -25,7 +25,7 @@ export function registerShortcuts() {
     if (data.type === "keyup" && data.keyboard) {
       // 从easyScholar更新期刊信息
       if (data.keyboard.equals(`${keyControl},${keyUpdateJournalInfo}`)) {
-        if (ifUpdateJournalInfo) {
+        if (ifUpdateJournalInfo && (keyUpdateJournalInfo !== "")) {
           const itemID = Zotero_Tabs._tabs[Zotero_Tabs.selectedIndex].data.itemID;
           // do nothing when trigger in the reader tab
           if (itemID) {
@@ -39,28 +39,28 @@ export function registerShortcuts() {
       }
       // 题目大小写改为句首字母大小写
       if (data.keyboard.equals(`${keyControl},${keyTitleSentence}`)) {
-        if (ifTitleSentence) {
+        if (ifTitleSentence && (keyTitleSentence !== "")) {
           HelperExampleFactory.chanItemTitleCase();
         }
       }
       // 期刊名称大小写
       if (data.keyboard.equals(`${keyControl},${keyPubTitleCase}`)) {
-        if (ifPubTitleCase) {
+        if (ifPubTitleCase && (keyPubTitleCase !== "")) {
           HelperExampleFactory.chPubTitleCase();
         }
       }
       // 显示数据目录
       if (data.keyboard.equals(`alt,${keyDataDir}`)) {
-        if (ifDataDir) {
+        if (ifDataDir && (keyDataDir !== "")) {
           HelperExampleFactory.progressWindow(
             `${getString("dataDir")} ${Zotero.DataDirectory.dir}`,
             "success",
           );
         }
       }
-      // 显示配置配置目录
+      // 显示配置目录
       if (data.keyboard.equals(`alt,${keyProfileDir}`)) {
-        if (ifProfileDir) {
+        if (ifProfileDir && (keyProfileDir !== "")) {
           HelperExampleFactory.progressWindow(
             `${getString("proDir")} ${Zotero.Profile.dir}`,
             "success",
