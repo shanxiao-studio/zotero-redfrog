@@ -155,28 +155,19 @@ function bindPrefEvents() {
       ztoolkit.log(e);
       UIExampleFactory.registerExtraColumn();
     });
+  // 影响因子
+  addon.data
+    .prefs!.window.document.querySelector(
+      `#zotero-prefpane-${config.addonRef}-sci-if`,
+    )
+    ?.addEventListener("command", (e) => {
+      ztoolkit.log(e);
+      UIExampleFactory.registerExtraColumn();
+    });
   // IF5
   addon.data
     .prefs!.window.document.querySelector(
       `#zotero-prefpane-${config.addonRef}-sci-if5`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-  // CSCD
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-chjcscd`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-  // NJU 核心，CSSCI
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-nju-core`,
     )
     ?.addEventListener("command", (e) => {
       ztoolkit.log(e);
@@ -191,10 +182,46 @@ function bindPrefEvents() {
       ztoolkit.log(e);
       UIExampleFactory.registerExtraColumn();
     });
+  // SciUpTop
+  addon.data
+    .prefs!.window.document.querySelector(
+      `#zotero-prefpane-${config.addonRef}-sci-up-top`,
+    )
+    ?.addEventListener("command", (e) => {
+      ztoolkit.log(e);
+      UIExampleFactory.registerExtraColumn();
+    });
+  // SciUpSmall
+  addon.data
+    .prefs!.window.document.querySelector(
+      `#zotero-prefpane-${config.addonRef}-sci-up-small`,
+    )
+    ?.addEventListener("command", (e) => {
+      ztoolkit.log(e);
+      UIExampleFactory.registerExtraColumn();
+    });
+  // CSCD
+  addon.data
+    .prefs!.window.document.querySelector(
+      `#zotero-prefpane-${config.addonRef}-chjcscd`,
+    )
+    ?.addEventListener("command", (e) => {
+      ztoolkit.log(e);
+      UIExampleFactory.registerExtraColumn();
+    });
   // 中文核心期刊
   addon.data
     .prefs!.window.document.querySelector(
       `#zotero-prefpane-${config.addonRef}-pku-core`,
+    )
+    ?.addEventListener("command", (e) => {
+      ztoolkit.log(e);
+      UIExampleFactory.registerExtraColumn();
+    });
+  // NJU 核心，CSSCI
+  addon.data
+    .prefs!.window.document.querySelector(
+      `#zotero-prefpane-${config.addonRef}-nju-core`,
     )
     ?.addEventListener("command", (e) => {
       ztoolkit.log(e);
@@ -273,21 +300,19 @@ function bindPrefEvents() {
       ztoolkit.log(e);
       UIExampleFactory.registerExtraColumn();
     });
-
-  // sci warn sci预警
+  // ahci
   addon.data
     .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-sciwarn`,
+      `#zotero-prefpane-${config.addonRef}-ahci`,
     )
     ?.addEventListener("command", (e) => {
       ztoolkit.log(e);
       UIExampleFactory.registerExtraColumn();
     });
-
-  // ahci
+  // sci warn sci预警
   addon.data
     .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-ahci`,
+      `#zotero-prefpane-${config.addonRef}-sciwarn`,
     )
     ?.addEventListener("command", (e) => {
       ztoolkit.log(e);
@@ -494,6 +519,15 @@ function bindPrefEvents() {
       ztoolkit.log(e);
       UIExampleFactory.registerExtraColumn();
     });
+  // cpu
+  addon.data
+    .prefs!.window.document.querySelector(
+      `#zotero-prefpane-${config.addonRef}-cpu`,
+    )
+    ?.addEventListener("command", (e) => {
+      ztoolkit.log(e);
+      UIExampleFactory.registerExtraColumn();
+    });
 
   // 自定义数据集
   // CLSCI
@@ -557,16 +591,6 @@ function bindPrefEvents() {
   addon.data
     .prefs!.window.document.querySelector(
       `#zotero-prefpane-${config.addonRef}-HX`
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-
-  // 影响因子
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-sci-if`,
     )
     ?.addEventListener("command", (e) => {
       ztoolkit.log(e);
