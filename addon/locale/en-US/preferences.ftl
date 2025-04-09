@@ -182,6 +182,14 @@ shortcut-data-dir =
     .label = Use shortcut for showing Zotero data directory:
 shortcut-profile-dir =
     .label = Use shortcut for showing Zotero profile directory:
+shortcut-ctrl-label = { PLATFORM() ->
+        [macos] ⌘
+       *[other] Ctrl
+    } +
+shortcut-alt-label = { PLATFORM() ->
+        [macos] ⌥
+       *[other] Alt
+    } +
 
 # 关于
 pref-title = Green Frog

@@ -182,6 +182,14 @@ shortcut-data-dir =
     .label = 使用快捷键显示Zotero数据文件目录:
 shortcut-profile-dir =
     .label = 使用快捷键显示Zotero配置文件目录:
+shortcut-ctrl-label = { PLATFORM() ->
+        [macos] ⌘
+       *[other] Ctrl
+    } +
+shortcut-alt-label = { PLATFORM() ->
+        [macos] ⌥
+       *[other] Alt
+    } +
 
 # 关于
 pref-title = 绿青蛙

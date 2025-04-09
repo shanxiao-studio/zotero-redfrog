@@ -49,8 +49,8 @@ export function registerShortcuts() {
           HelperExampleFactory.chPubTitleCase();
         }
       }
-      // 显示数据目录
-      if (data.keyboard.equals(`alt,${keyDataDir}`)) {
+      // 显示数据目录 Alt+D
+      if (data.keyboard.equals(`alt,${keyDataDir}`) || data.keyboard.equals("alt,∂")) {
         if (ifDataDir && (keyDataDir !== "")) {
           HelperExampleFactory.progressWindow(
             `${getString("dataDir")} ${Zotero.DataDirectory.dir}`,
@@ -58,8 +58,8 @@ export function registerShortcuts() {
           );
         }
       }
-      // 显示配置目录
-      if (data.keyboard.equals(`alt,${keyProfileDir}`)) {
+      // 显示配置目录 Alt+P
+      if (data.keyboard.equals(`alt,${keyProfileDir}`) || data.keyboard.equals("alt,π")) {
         if (ifProfileDir && (keyProfileDir !== "")) {
           HelperExampleFactory.progressWindow(
             `${getString("proDir")} ${Zotero.Profile.dir}`,
