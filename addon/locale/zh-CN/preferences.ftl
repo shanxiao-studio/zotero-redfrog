@@ -172,16 +172,17 @@ menu-sep-2 =
 ## 快捷键设置
 shortcut-setting = 快捷键设置
 shortcut-update-journal-info =
-    .label = 使用快捷键从easyScholar更新期刊信息:
-shortcut-update-journal-info-hint = 注意：当前仅支持选择常规条目时使用该快捷键
+    .label = 使用快捷键为当前选定条目更新期刊信息
+shortcut-update-journal-info-hint =
+    .tooltiptext = 当前仅支持选择常规条目时使用此快捷键
 shortcut-title-sentence-case =
-    .label = 使用快捷键设置文献题目为句首字母大写:
+    .label = 使用快捷键设置文献题目为句首字母大写
 shortcut-publication-title-case =
-    .label = 使用快捷键设置期刊名称为词首字母大写:
+    .label = 使用快捷键设置期刊名称为词首字母大写
 shortcut-data-dir =
-    .label = 使用快捷键显示Zotero数据文件目录:
+    .label = 使用快捷键显示Zotero数据文件目录
 shortcut-profile-dir =
-    .label = 使用快捷键显示Zotero配置文件目录:
+    .label = 使用快捷键显示Zotero配置文件目录
 shortcut-ctrl-label = { PLATFORM() ->
         [macos] ⌘
        *[other] Ctrl
@@ -190,6 +191,8 @@ shortcut-alt-label = { PLATFORM() ->
         [macos] ⌥
        *[other] Alt
     } +
+shortcut-alert-macos =
+    .tooltiptext = MacOS当前不支持自定义修改此快捷键的字母
 
 # 关于
 pref-title = 绿青蛙

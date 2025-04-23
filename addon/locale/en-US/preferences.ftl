@@ -172,16 +172,17 @@ menu-sep-2 =
 ## 快捷键设置
 shortcut-setting = Shortcut Settings
 shortcut-update-journal-info =
-    .label = Use shortcut for updating Journal Information:
-shortcut-update-journal-info-hint = Hint: Currently only supports selected regular items
+    .label = Use shortcut for updating journal information of selected items
+shortcut-update-journal-info-alert =
+    .tooltiptext = This shortcut is currently supported only for selecting regular items!
 shortcut-title-sentence-case =
-    .label = Use shortcut for changing title to sentence case:
+    .label = Use shortcut for changing title to sentence case
 shortcut-publication-title-case =
-    .label = Use shortcut for changing publication title to title case:
+    .label = Use shortcut for changing publication title to title case
 shortcut-data-dir =
-    .label = Use shortcut for showing Zotero data directory:
+    .label = Use shortcut for showing Zotero data directory
 shortcut-profile-dir =
-    .label = Use shortcut for showing Zotero profile directory:
+    .label = Use shortcut for showing Zotero profile directory
 shortcut-ctrl-label = { PLATFORM() ->
         [macos] ⌘
        *[other] Ctrl
@@ -190,6 +191,8 @@ shortcut-alt-label = { PLATFORM() ->
         [macos] ⌥
        *[other] Alt
     } +
+shortcut-alert-macos =
+    .tooltiptext = For MacOS, modifying this shortcut key letter is currently not supported!
 
 # 关于
 pref-title = Green Frog
