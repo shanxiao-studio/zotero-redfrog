@@ -1,4 +1,4 @@
-import { ProgressWindowHelper } from "zotero-plugin-toolkit/dist/helpers/progressWindow";
+import { ProgressWindowHelper } from "zotero-plugin-toolkit";
 import { config } from "../../package.json";
 import { getString } from "../utils/locale";
 import { getPref } from "../utils/prefs";
@@ -972,6 +972,7 @@ export class KeyExampleFactory {
               const userAgent =
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.56";
               const url = "https://cnki.net/";
+              // @ts-ignore - Plugin instance is not typed
               return new Zotero.CookieSandbox("", url, cookieData, userAgent);
             }
 
@@ -997,8 +998,10 @@ export class KeyExampleFactory {
             const postUrl = "https://kns.cnki.net/kns8/Brief/GetGridTableHtml";
 
             function getHtml(responseText: any) {
+              // @ts-ignore - Plugin instance is not typed
               const parser = Components.classes[
                 "@mozilla.org/xmlextras/domparser;1"
+                // @ts-ignore - Plugin instance is not typed
               ].createInstance(Components.interfaces.nsIDOMParser);
               const html = parser.parseFromString(responseText, "text/html");
               return html;
@@ -1487,6 +1490,7 @@ export class UIExampleFactory {
           // oncommand: "alert('Hello World! Sub Menuitem.')",
           commandListener: (ev) =>
             HelperExampleFactory.progressWindow(
+              // @ts-ignore - Plugin instance is not typed
               `${getString("proDir")} ${Zotero.Profile.dir}`,
               "success",
             ),

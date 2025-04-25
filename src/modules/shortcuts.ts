@@ -62,6 +62,7 @@ export function registerShortcuts() {
       if (data.keyboard.equals(`alt,${keyProfileDir}`) || data.keyboard.equals("alt,π")) {
         if (ifProfileDir && (keyProfileDir !== "")) {
           HelperExampleFactory.progressWindow(
+            // @ts-ignore - Plugin instance is not typed
             `${getString("proDir")} ${Zotero.Profile.dir}`,
             "success",
           );

@@ -4,6 +4,7 @@ import { config } from "../package.json";
 
 const basicTool = new BasicTool();
 
+// @ts-ignore - Plugin instance is not typed
 if (!basicTool.getGlobal("Zotero")[config.addonInstance]) {
   // Set global variables
   _globalThis.Zotero = basicTool.getGlobal("Zotero");
@@ -24,5 +25,6 @@ if (!basicTool.getGlobal("Zotero")[config.addonInstance]) {
     "default",
     `chrome://${config.addonRef}/content/icons/favicon.png`,
   );
+  // @ts-ignore - Plugin instance is not typed
   Zotero[config.addonInstance] = addon;
 }
