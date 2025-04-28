@@ -1834,7 +1834,7 @@ export class UIExampleFactory {
     for (const key in columnConfig) {
       const opt = columnConfig[key];
       if (getPref(opt.pref || key)) {
-        const result = await Zotero.ItemTreeManager.registerColumns({
+        const result = await Zotero.ItemTreeManager.registerColumn({
           dataKey: opt.dataKey || key,
           label: getString(opt.dataKey || key),
           pluginID: config.addonID,
@@ -1850,7 +1850,7 @@ export class UIExampleFactory {
         }
       } else {
         opt.registeredKey &&
-          (await Zotero.ItemTreeManager.unregisterColumns(opt.registeredKey));
+          (await Zotero.ItemTreeManager.unregisterColumn(opt.registeredKey));
       }
     }
   }
