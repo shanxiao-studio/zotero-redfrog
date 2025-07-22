@@ -842,6 +842,7 @@ export class KeyExampleFactory {
   }
 
   @example
+  // 获取复合影响因子及综合影响因子代码源于@l0o0，感谢 20250722
   // 设置复合影响因子及综合影响因子20220709
   // 后续可用"https://kns.cnki.net/knavi/journals/searchbaseinfo", 20240929
   // 类似功能 https://github.com/MuiseDestiny/zotero-style/discussions/288
@@ -853,25 +854,36 @@ export class KeyExampleFactory {
     if (pattern.test(String(pubT))) {
       // 如果期刊名中含有中文才进行替换
       try {
-        const formData = new window.FormData();
-        formData.append("searchStateJson", `{"StateID":"","Platfrom":"","QueryTime":"","Account":"knavi","ClientToken":"","Language":"","CNode":{"PCode":"SQN63324","SMode":"","OperateT":""},"QNode":{"SelectT":"","Select_Fields":"","S_DBCodes":"","QGroup":[{"Key":"subject","Logic":1,"Items":[],"ChildItems":[{"Key":"txt","Logic":1,"Items":[{"Key":"txt_1","Title":"","Logic":1,"Name":"TI","Operate":"%","Value":"'${pubT}'","ExtendType":0,"ExtendValue":"","Value2":""}],"ChildItems":[]}]}],"OrderBy":"OTA|DESC","GroupBy":"","Additon":""}}`);
-        formData.append("displaymode", "1");
-        formData.append("pageindex", "1");
-        formData.append("pagecount", "21");
-        formData.append("searchType", "刊名(曾用刊名)");
-        formData.append("switchdata", "search");
+        // const formData = new window.FormData();
+        // formData.append("searchStateJson", `{"StateID":"","Platfrom":"","QueryTime":"","Account":"knavi","ClientToken":"","Language":"","CNode":{"PCode":"SQN63324","SMode":"","OperateT":""},"QNode":{"SelectT":"","Select_Fields":"","S_DBCodes":"","QGroup":[{"Key":"subject","Logic":1,"Items":[],"ChildItems":[{"Key":"txt","Logic":1,"Items":[{"Key":"txt_1","Title":"","Logic":1,"Name":"TI","Operate":"%","Value":"'${pubT}'","ExtendType":0,"ExtendValue":"","Value2":""}],"ChildItems":[]}]}],"OrderBy":"OTA|DESC","GroupBy":"","Additon":""}}`);
+        // formData.append("displaymode", "1");
+        // formData.append("pageindex", "1");
+        // formData.append("pagecount", "21");
+        // formData.append("searchType", "刊名(曾用刊名)");
+        // formData.append("switchdata", "search");
 
-        const res = await Zotero.HTTP.request("POST",
-          "https://kns.cnki.net/knavi/journals/searchbaseinfo",
-          {
-            headers: {
-              "Content-Type": "multipart/form-data"
-            },
-            body: formData as any
-          }
-        )
-        const compoundIF = res.responseText.match(/复合影响因子：([\d\.]+)/)?.[1]
-        const comprehensiveIF = res.responseText.match(/综合影响因子：([\d\.]+)/)?.[1]
+        // const res = await Zotero.HTTP.request("POST",
+        //   "https://kns.cnki.net/knavi/journals/searchbaseinfo",
+        //   {
+        //     headers: {
+        //       "Content-Type": "multipart/form-data"
+        //     },
+        //     body: formData as any
+        //   }
+        // ) //注释时间 20270722
+        // const journalName = "食品科学";
+       const resp = await Zotero.HTTP.request(
+            "GET",
+            `http://121.196.229.180:8080/v1/journals/cnki/${encodeURI(pubT)}`,
+            {headers: {pluginID: "greenfrog@redleafnew.me"}}
+        );
+        // return JSON.parse(resp.responseText);
+
+        // const compoundIF = res.responseText.match(/复合影响因子：([\d\.]+)/)?.[1]
+        // const comprehensiveIF = res.responseText.match(/综合影响因子：([\d\.]+)/)?.[1] //20250722
+        const compoundIF = JSON.parse(resp.responseText).data.fhyz
+        const comprehensiveIF = JSON.parse(resp.responseText).data.zhyz
+
         if (compoundIF !== undefined) {
           chineseIFs.push(compoundIF);
           Zotero.debug("复合影响因子是： " + compoundIF );

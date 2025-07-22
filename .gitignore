@@ -6,3 +6,5 @@ yarn.lock
 .DS_Store
 .env
 .scaffold
+node_modules
+.env
