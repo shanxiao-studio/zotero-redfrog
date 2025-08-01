@@ -173,7 +173,7 @@ menu-sep-2 =
 shortcut-setting = 快捷键设置
 shortcut-update-journal-info =
     .label = 使用快捷键为当前选定条目更新期刊信息
-shortcut-update-journal-info-hint =
+shortcut-update-journal-info-alert =
     .tooltiptext = 当前仅支持选择常规条目时使用此快捷键
 shortcut-title-sentence-case =
     .label = 使用快捷键设置文献题目为句首字母大写
@@ -191,8 +191,6 @@ shortcut-alt-label = { PLATFORM() ->
         [macos] ⌥
        *[other] Alt
     } +
-shortcut-alert-macos =
-    .tooltiptext = MacOS当前不支持自定义修改此快捷键的字母
 
 # 关于
 pref-title = 绿青蛙

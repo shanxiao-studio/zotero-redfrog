@@ -1,10 +1,8 @@
 build
 logs
-node_modules
 pnpm-lock.yaml
 yarn.lock
 .DS_Store
 .env
 .scaffold
 node_modules
-.env

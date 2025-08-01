@@ -11,16 +11,12 @@ export function registerShortcuts() {
     const ifPubTitleCase = getPref(`shortcut.publication.title.case`);
     const keyPubTitleCase = getPref(`shortcut.input.publication.title.case`);
     const ifDataDir = getPref(`shortcut.data.dir`);
-    const keyDataDir = getPref(`shortcut.input.data.dir`);
+    const keyDataDir = getPref(`shortcut.input.data.dir`) as string;
     const ifProfileDir = getPref(`shortcut.profile.dir`);
-    const keyProfileDir = getPref(`shortcut.input.profile.dir`);
+    const keyProfileDir = getPref(`shortcut.input.profile.dir`) as string;
 
     // win的control 键 mac的command键  accel是控制键，在mac对应command，在其他系统对应ctrl
-    if (Zotero.isMac) {
-      var keyControl = "meta";
-    } else {
-      var keyControl = "control";
-    }
+    const keyControl = Zotero.isMac ? "meta" : "control";
 
     if (data.type === "keyup" && data.keyboard) {
       // 从easyScholar更新期刊信息
@@ -50,7 +46,7 @@ export function registerShortcuts() {
         }
       }
       // 显示数据目录 Alt+D
-      if (data.keyboard.equals(`alt,${keyDataDir}`) || data.keyboard.equals("alt,∂")) {
+      if (data.keyboard.equals(`alt,${keyDataDir}`) || data.keyboard.equals(`alt,${getModifiedCharacter(keyDataDir, "option")}`)) {
         if (ifDataDir && (keyDataDir !== "")) {
           HelperExampleFactory.progressWindow(
             `${getString("dataDir")} ${Zotero.DataDirectory.dir}`,
@@ -59,7 +55,7 @@ export function registerShortcuts() {
         }
       }
       // 显示配置目录 Alt+P
-      if (data.keyboard.equals(`alt,${keyProfileDir}`) || data.keyboard.equals("alt,π")) {
+      if (data.keyboard.equals(`alt,${keyProfileDir}`) || data.keyboard.equals(`alt,${getModifiedCharacter(keyProfileDir, "option")}`)) {
         if (ifProfileDir && (keyProfileDir !== "")) {
           HelperExampleFactory.progressWindow(
             // @ts-ignore - Plugin instance is not typed
@@ -70,4 +66,26 @@ export function registerShortcuts() {
       }
     }
   });
+  // key Map for MacOS
+  type KeyModifiers = { option: string; };
+
+  type KeyboardMap = Record<string, KeyModifiers>;
+
+  const macKeyboardMap: KeyboardMap = {
+    'q': { option: 'œ' }, 'w': { option: '∑' }, 'e': { option: '´' }, 'r': { option: '®' }, 
+    't': { option: '†' }, 'y': { option: '¥' }, 'u': { option: '¨' }, 'i': { option: '^' },
+    'o': { option: 'ø' }, 'p': { option: 'π' }, 'a': { option: 'å' }, 's': { option: 'ß' },
+    'd': { option: '∂' }, 'f': { option: 'ƒ' }, 'g': { option: '©' }, 'h': { option: '˙' },
+    'j': { option: '∆' }, 'k': { option: '˚' }, 'l': { option: '¬' }, 'z': { option: 'Ω' },
+    'x': { option: '≈' }, 'c': { option: 'ç' }, 'v': { option: '√' }, 'b': { option: '∫' },
+    'n': { option: '˜' }, 'm': { option: 'µ' }
+  };
+
+  function getModifiedCharacter(
+    inputChar: string,
+    modifier: keyof KeyModifiers
+  ): string | null {
+    const normalizedInputChar = inputChar.toLowerCase();
+    return macKeyboardMap[normalizedInputChar]?.[modifier] ?? null;
+  }
 }

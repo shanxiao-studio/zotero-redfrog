@@ -1,7 +1,4 @@
 /* eslint-disable no-undef */
-pref("extensions.zotero.__addonRef__.enable", true);
-pref("extensions.zotero.__addonRef__.enable1", false);
-pref("extensions.zotero.__addonRef__.input", "This is input");
 pref("extensions.zotero.__addonRef__.secretkey", "");
 // 期刊缩写
 pref("extensions.zotero.__addonRef__.update.empty.extra", false);

@@ -7,9 +7,6 @@
 declare namespace _ZoteroTypes {
   interface Prefs {
     PluginPrefsMap: {
-      "enable": boolean;
-      "enable1": boolean;
-      "input": string;
       "secretkey": string;
       "update.empty.extra": boolean;
       "add.update": boolean;

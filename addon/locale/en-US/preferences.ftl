@@ -191,8 +191,6 @@ shortcut-alt-label = { PLATFORM() ->
         [macos] ⌥
        *[other] Alt
     } +
-shortcut-alert-macos =
-    .tooltiptext = For MacOS, modifying this shortcut key letter is currently not supported!
 
 # 关于
 pref-title = Green Frog
