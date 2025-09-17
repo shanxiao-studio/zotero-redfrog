@@ -2308,15 +2308,15 @@ export class HelperExampleFactory {
     const pubT = item.getField("publicationTitle");
     if (upJourAbb) {
       try {
-        var jourAbbs = await HelperExampleFactory.getJourAbb(pubT); // 得到带点和不带点的缩写
+        var jourAbbWithDot = await HelperExampleFactory.getJourAbb(pubT); // 得到带点和不带点的缩写
       } catch (e) {
         Zotero.debug("获取期刊缩写失败");
       }
 
-      if (jourAbbs["record"] == 0) {
+      if (jourAbbWithDot == null) {
         // 得到带点和不带点的缩写, 尝试& 替换为 and
         try {
-          var jourAbbs = await HelperExampleFactory.getJourAbb(
+          var jourAbbWithDot = await HelperExampleFactory.getJourAbb(
             (pubT as any).replace("&", "and"),
           ); // 得到带点和不带点的缩写
         } catch (e) {
@@ -2324,19 +2324,19 @@ export class HelperExampleFactory {
         }
       }
 
-      if (jourAbbs["record"] == 0) {
+      if (jourAbbWithDot == null) {
         // 自定义的期刊缩写
         try {
-          var jourAbbs = getAbbEx(pubT as any); // 得到带点和不带点的缩写
+          var jourAbbWithDot = getAbbEx(pubT as any); // 得到带点和不带点的缩写
         } catch (e) {
           Zotero.debug("获取自定义期刊缩写失败");
         }
       }
 
-      if (jourAbbs["record"] == 0) {
+      if (jourAbbWithDot == null) {
         // 得到带点和不带点的缩写, 尝试删除the空格
         try {
-          var jourAbbs = await HelperExampleFactory.getJourAbb(
+          var jourAbbWithDot = await HelperExampleFactory.getJourAbb(
             (pubT as any).replace(/the\s/i, ""),
           ); // 得到带点和不带点的缩写
         } catch (e) {
@@ -2344,11 +2344,12 @@ export class HelperExampleFactory {
         }
       }
 
-      if (jourAbbs["record"] != 0) {
+      if (jourAbbWithDot != null) {
         try {
+
           const jourAbb = dotAbb
-            ? jourAbbs["abb_with_dot"]
-            : jourAbbs["abb_no_dot"];
+            ? jourAbbWithDot
+            : jourAbbWithDot.replace(/\./g,''); // 替换带点缩写中的点
 
           let abb = HelperExampleFactory.titleCase(jourAbb); //改为词首字母大写
           abb = abb
@@ -2380,26 +2381,23 @@ export class HelperExampleFactory {
     item.saveTx();
   }
 
-  // 得到期刊缩写
+  // 得到期刊缩写 带点缩写 代码From @l0o0,感谢小林。
   static async getJourAbb(pubT: any) {
     // var pubT = (item.getField('publicationTitle') as any).replace('&', 'and');
-    const url = "https://www.linxingzhong.top/journal";
-    const postData = {
-      key: "journal",
-      fullname: pubT,
-    };
-    const headers = { "Content-Type": "application/json" };
-    // Maybe need to set max retry in this post request.
-    const resp = await Zotero.HTTP.request("POST", url, {
-      body: JSON.stringify(postData),
-      headers: headers,
-    });
-    try {
-      const record = JSON.parse(resp.responseText);
-      return record;
-    } catch (e) {
+    var resp = await Zotero.HTTP.request(
+    "GET",
+    `http://121.196.229.180:8080/v1/journals/abbreviation/${encodeURI(pubT)}`,
+    {headers: {pluginID: "greenfrog@redleafnew.me"}}
+);
+    try{
+      if (JSON.parse(resp.responseText)["data"]!=null){
+      return JSON.parse(resp.responseText)["data"]["abb_with_dot"];
+        } else {
+          return null}
+      } catch (e) {
       return;
     }
+
   }
 
   // 作者处理函数 加粗加星

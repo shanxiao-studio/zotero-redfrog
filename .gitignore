@@ -6,3 +6,5 @@ yarn.lock
 .env
 .scaffold
 node_modules
+.env
+.scaffold
