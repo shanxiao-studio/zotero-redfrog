@@ -3,6 +3,7 @@ pref("extensions.zotero.__addonRef__.secretkey", "");
 // 期刊缩写
 pref("extensions.zotero.__addonRef__.update.empty.extra", false);
 pref("extensions.zotero.__addonRef__.add.update", false);
+pref("extensions.zotero.__addonRef__.add.upmeta", false);
 pref("extensions.zotero.__addonRef__.update.title.sentence.case", true);
 pref("extensions.zotero.__addonRef__.update.publication.title.case", false);
 pref("extensions.zotero.__addonRef__.update.abbr", true);

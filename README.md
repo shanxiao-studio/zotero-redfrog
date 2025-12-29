@@ -34,6 +34,7 @@
    ![列上显示](./img/extracolumn.jpg "在列中显示")
 
 2. 更新条目元数据。
+   - 可在`编辑`-`设置`-`绿青蛙`中开启`添加条目时更新元数据`，当添加条目时自动根据DOI(英文)或题目(中文)更新元数据。
 
 3. 清空`“其他”`字段内容（`工具`-`清空“其他”字段...`）。
 
@@ -79,6 +80,7 @@ The [latest version](https://github.com/redleafnew/zotero-updateifsE/releases/la
    - The Journal Information will be saved in `"Extra"` field.
 
 2. Update item Metadata.
+   - You can enable `Update item metadata when adding item` in `Edit`-`Settings`-`Green Frog`. When adding an item, the metadata will be updated automatically based on DOI (English) or Title (Chinese).
 
 3. Empty `"Extra"` field content (`Tools`-`Empty "Extra" Field...`).
 

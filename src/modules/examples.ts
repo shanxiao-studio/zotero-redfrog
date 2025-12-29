@@ -75,9 +75,15 @@ export class BasicExampleFactory {
     const addItemTitleSentenceCase = getPref("update.title.sentence.case");
     // 增加条目时 更新 期刊题目改为词首字母大写
     const addPubTitleCase = getPref("update.publication.title.case");
+    // 增加条目时 更新元数据
+    const addUpMeta = getPref("add.upmeta");
 
     if (addUpdate) {
       await KeyExampleFactory.setExtra(regularItems);
+    }
+
+    if (addUpMeta) {
+      await KeyExampleFactory.upMeta(regularItems);
     }
 
     if (addItemTitleSentenceCase) {
