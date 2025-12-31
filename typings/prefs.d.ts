@@ -10,6 +10,7 @@ declare namespace _ZoteroTypes {
       "secretkey": string;
       "update.empty.extra": boolean;
       "add.update": boolean;
+      "add.upmeta": boolean;
       "update.title.sentence.case": boolean;
       "update.publication.title.case": boolean;
       "update.abbr": boolean;
