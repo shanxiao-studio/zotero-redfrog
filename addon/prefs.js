@@ -33,7 +33,8 @@ pref("extensions.zotero.__addonRef__.zju", false);
 pref("extensions.zotero.__addonRef__.cpu", false);
 pref("extensions.zotero.__addonRef__.njau.core", true);
 pref("extensions.zotero.__addonRef__.njau.high.quality", true);
-// 自定义数据集
+// 自定义数据集 custom data
+pref("extensions.zotero.__addonRef__.CoreRankings", false);
 pref("extensions.zotero.__addonRef__.HX", false);
 pref("extensions.zotero.__addonRef__.Scopus", false);
 pref("extensions.zotero.__addonRef__.ABDC", false); //澳大利亚ABDC

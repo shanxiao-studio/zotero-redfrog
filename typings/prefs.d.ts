@@ -38,6 +38,7 @@ declare namespace _ZoteroTypes {
       "cpu": boolean;
       "njau.core": boolean;
       "njau.high.quality": boolean;
+      "CoreRankings": boolean;
       "HX": boolean;
       "Scopus": boolean;
       "ABDC": boolean;

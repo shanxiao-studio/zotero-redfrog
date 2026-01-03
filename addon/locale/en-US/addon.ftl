@@ -120,7 +120,7 @@ cug = CUG
 cju = CJU
 zju = ZJU
 cpu = CPU
-# 自定义数据集
+# 自定义数据集 custom dataset
 ami = AMI
 clsci = CLSCI
 nssf = NSSF
@@ -128,6 +128,7 @@ swupl = SWUPL
 ABDC = ABDC
 Scopus = Scopus
 HX = HX
+CoreRankings = CORE Rankings
 
 summary = Summary
 

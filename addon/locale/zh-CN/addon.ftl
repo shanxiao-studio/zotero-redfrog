@@ -132,6 +132,7 @@ swupl = 西南政法大学
 ABDC = ABDC
 Scopus = Scopus
 HX = HX
+CoreRankings = CORE评级
 
 summary = 总结
 

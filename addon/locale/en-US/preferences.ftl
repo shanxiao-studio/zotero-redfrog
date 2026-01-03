@@ -119,7 +119,7 @@ zju =
 cpu =
     .label = CPU
 
-## 自定义数据集
+## 自定义数据集 custom dataset
 custom-data = Custom Dataset
 ami =
     .label = AMI
@@ -137,6 +137,9 @@ Scopus =
     .label = Scopus
 HX =
     .label = HX
+CoreRankings =
+    .label = CORE Rankings
+
 
 ## 菜单显示隐藏设置
 menu-setting = Show Toolbox Menu Settings

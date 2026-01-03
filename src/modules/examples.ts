@@ -217,7 +217,7 @@ export class KeyExampleFactory {
         const cpu = getPref(`cpu`);
         const njauCoreShow = getPref(`njau.core`);
         const njauJourShow = getPref(`njau.high.quality`);
-        // 自定义数据集
+        // 自定义数据集 custom dataset
         const clsci = getPref(`clsci`);
         const ccf_c = getPref(`ccf_c`); // better CCF
         const ami = getPref(`ami`);
@@ -228,6 +228,7 @@ export class KeyExampleFactory {
         const Scopus = getPref(`Scopus`);
 
         const HX = getPref(`HX`);
+        const CoreRankings = getPref(`CoreRankings`);
 
         // 自定义数据集
         var clsciJourID = '1642199434173014016'; // CLSCI UUID
@@ -237,7 +238,8 @@ export class KeyExampleFactory {
         var ScopusJourID = '1635615726460694528';//Scopus  UUID
         var ABDCJourID = '1613183594358972416';//ABDC  UUID
         var CCFJourID = '1614919989423271936';//CCF  UUID
-        var HXJourID = '1630107627939360768';
+        var HXJourID = '1630107627939360768';//HX  UUID
+        var CoreRankingsJourID = '1671898121325117440';//CORE-Rankings  UUID
 
 
         //  加: any为了后面不报错
@@ -290,6 +292,13 @@ export class KeyExampleFactory {
             HXJourID,
           );
         }
+        //CORE Rankings
+        if (CoreRankings) {
+          var CoreRankingsLevel: any = await KeyExampleFactory.getCustomIFs(
+            item,
+            CoreRankingsJourID,
+          );
+        }
         if (njauJourShow) {
           var njauHighQuality = await njauJournal(item);
         }
@@ -304,6 +313,7 @@ export class KeyExampleFactory {
           (Scopus && ScopusLevel) ||
           (ABDC && ABDCLevel) ||
           (HX && HXLevel) ||
+          (CoreRankings && CoreRankingsLevel) ||
           njauCore(item) ||
           njauHighQuality
         ) {
@@ -691,6 +701,10 @@ export class KeyExampleFactory {
         // HX
         if (HX && HXLevel != undefined) {
           ztoolkit.ExtraField.setExtraField(item, 'HX', HXLevel);
+        }
+        // CoreRankings
+        if (CoreRankings && CoreRankingsLevel != undefined) {
+          ztoolkit.ExtraField.setExtraField(item, 'CORE评级', CoreRankingsLevel);
         }
 
         Zotero.debug("swupl是" + swupl + "swuplLevel是" + swuplLevel);
@@ -1828,7 +1842,7 @@ export class UIExampleFactory {
         dataKey: "njauJour",
         field: "南农高质量",
       },
-      // 自定义数据集
+      // 自定义数据集 custom dataset
       clsci: {
         field: "CLSCI",
       },
@@ -1844,6 +1858,7 @@ export class UIExampleFactory {
       Scopus: {},
       ABDC: {},
       HX: {},
+      CoreRankings: {},
       summary: {
         field: "总结",
       },

@@ -137,6 +137,9 @@ Scopus =
     .label = Scopus
 HX =
     .label = HX
+CoreRankings =
+    .label = CORE评级
+
 
 ## 菜单显示隐藏设置
 menu-setting = 工具箱菜单显示设置
