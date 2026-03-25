@@ -3,8 +3,8 @@
     "redfrog@shanxiao.shop": {
       "updates": [
         {
-          "version": "1.0.0",
-          "update_link": "https://github.com/shanxiao-studio/zotero-redfrog/releases/download/v1.0.0/redfrog.xpi",
+          "version": "2026.3.25",
+          "update_link": "https://github.com/shanxiao-studio/zotero-redfrog/releases/download/v2026.3.25/redfrog.xpi",
           "applications": {
             "zotero": {
               "strict_min_version": "7.0.0",
