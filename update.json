@@ -1,23 +1,14 @@
 {
   "addons": {
-    "greenfrog@redleafnew.me": {
+    "redfrog@shanxiao.shop": {
       "updates": [
         {
-          "version": "0.13.0",
-          "update_link": "https://github.com/redleafnew/zotero-updateifsE/releases/download/0.13.0/greenfrog.xpi",
-          "applications": {
-            "gecko": {
-              "strict_min_version": "60.0"
-            }
-          }
-        },
-        {
-          "version": "0.19.6",
-          "update_link": "https://github.com/redleafnew/zotero-updateifsE/releases/download/v0.19.6/green-frog.xpi",
+          "version": "1.0.0",
+          "update_link": "https://github.com/shanxiao-studio/zotero-redfrog/releases/download/v1.0.0/redfrog.xpi",
           "applications": {
             "zotero": {
-              "strict_min_version": "6.999",
-              "strict_max_version": "7.0.*"
+              "strict_min_version": "7.0.0",
+              "strict_max_version": "8.0.*"
             }
           }
         }

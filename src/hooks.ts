@@ -31,16 +31,17 @@ async function onMainWindowLoad(win: Window) {
   UIExampleFactory.registerRightClickMenuItem(); // 右键菜单
   // UIExampleFactory.registerRightClickMenuPopup(); // 右键弹出菜单
   UIExampleFactory.registerWindowMenuWithSeprator();
+  UIExampleFactory.registerToolbarButton();
   await UIExampleFactory.registerExtraColumn();
 
   //监听分类右键显示菜单
-  // @ts-ignore
+  // @ts-ignore - ZoteroPane is injected by Zotero runtime and not present in TS types
   ZoteroPane.collectionsView.onSelect.addListener(
     UIExampleFactory.displayColMenuitem,
   ); //监听分类右键显示菜单
 
   //监听右键显示菜单
-  // @ts-ignore
+  // @ts-ignore - ZoteroPane is injected by Zotero runtime and not present in TS types
   ZoteroPane.itemsView.onSelect.addListener(
     UIExampleFactory.displayContexMenuitem,
   ); //监听右键显示菜单

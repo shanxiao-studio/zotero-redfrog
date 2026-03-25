@@ -43,4 +43,10 @@ export default tseslint.config(
       "@typescript-eslint/no-non-null-assertion": "off",
     },
   },
+  {
+    files: ["src/modules/examples.ts"],
+    rules: {
+      "no-var": "off",
+    },
+  },
 );

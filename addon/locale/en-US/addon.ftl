@@ -4,7 +4,7 @@ menuitem-label = Addon Template: Helper Examples
 menupopup-label = Addon Template: Menupopup
 menuitem-submenulabel = Addon Template
 menuitem-filemenulabel = Addon Template: File Menuitem
-prefs-title = Green Frog
+prefs-title = Red Frog
 prefs-table-title = Title
 prefs-table-detail = Detail
 tabpanel-lib-tab-label = Lib Tab
@@ -31,6 +31,8 @@ showProfile = Show Zotero Porfile Directory
 showData = Show Zotero Data Directory
 proDir = The porfile directory is:
 dataDir = The data directory is:
+
+toolbar-update-all = Update all items in current collection
 
 
 # 作者处理
@@ -74,7 +76,7 @@ pubTitleEmpty = The original or the new publication title is empty, please input
 successPubTitle = publication title(s) updated.
 
 # 影响因子
-inputSecretkey = Please input easyScholar secretkey in Green Frog preference.
+inputSecretkey = Please input easyScholar secretkey in Red Frog preference.
 JCR = JCR
 IF = IF
 IF5 = IF 5 Year
@@ -92,6 +94,15 @@ AJG = AJG
 UTD24 = UTD24
 FT50 = FT50
 CCF = CCF
+rank = Rank
+partition = Quartile
+rating = Rating
+rating-0 = ☆☆☆☆☆
+rating-1 = ★☆☆☆☆
+rating-2 = ★★☆☆☆
+rating-3 = ★★★☆☆
+rating-4 = ★★★★☆
+rating-5 = ★★★★★
 FMS = FMS
 JCI = JCI
 AHCI = AHCI
@@ -99,6 +110,7 @@ sciwarn = CAS Warning
 esi = ESI
 compoundIF = Compound IF
 comprehensiveIF = Comprehensive IF
+GSCitations = Citation Count
 njauCore = NJAU Core
 njauJour = NJAU High Quality
 swufe = SWUFE
@@ -120,17 +132,8 @@ cug = CUG
 cju = CJU
 zju = ZJU
 cpu = CPU
-# 自定义数据集 custom dataset
-ami = AMI
-clsci = CLSCI
-nssf = NSSF
-swupl = SWUPL
-ABDC = ABDC
-Scopus = Scopus
-HX = HX
-CoreRankings = CORE Rankings
-
 summary = Summary
+pubConfName = Publication/Conference Name
 
 upIfsSuccess =
  {$count ->
@@ -138,3 +141,7 @@ upIfsSuccess =
   *[other] Journal information of the selected { $count } items updated sucessfully.
   }
 upIfsFail = Could not Retrive this journal information from easyScholar.
+
+update-journal-start = Updating journal data...
+
+gsCaptchaAlert = Google Scholar triggered captcha/rate limit. Please complete verification in the opened page and retry update.

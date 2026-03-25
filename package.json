@@ -1,13 +1,13 @@
 {
-  "name": "greenfrog",
-  "version": "0.20.6",
+  "name": "redfrog",
+  "version": "2026.03.25",
   "description": "Zotero plugin for update journal information from easyScholar",
   "config": {
-    "addonName": "Green Frog",
-    "addonID": "greenfrog@redleafnew.me",
-    "addonRef": "greenfrog",
-    "addonInstance": "greenfrog",
-    "prefsPrefix": "extensions.zotero.greenfrog"
+    "addonName": "Red Frog",
+    "addonID": "redfrog@shanxiao.shop",
+    "addonRef": "redfrog",
+    "addonInstance": "redfrog",
+    "prefsPrefix": "extensions.zotero.redfrog"
   },
   "main": "src/index.ts",
   "scripts": {
@@ -20,14 +20,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/redleafnew/zotero-updateifsE.git"
+    "url": "git+https://github.com/shanxiao-studio/zotero-redfrog.git"
   },
-  "author": "Minyi Han",
+  "author": "Shanxiao",
   "license": "AGPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/redleafnew/zotero-updateifsE/issues"
+    "url": "https://github.com/shanxiao-studio/zotero-redfrog/issues"
   },
-  "homepage": "https://github.com/redleafnew/zotero-updateifsE#readme",
+  "homepage": "https://github.com/shanxiao-studio/zotero-redfrog#readme",
   "dependencies": {
     "zotero-plugin-toolkit": "^4.1.2"
   },

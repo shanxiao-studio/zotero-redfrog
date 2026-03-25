@@ -11,45 +11,23 @@ pref("extensions.zotero.__addonRef__.update.abbr.dot", true);
 pref("extensions.zotero.__addonRef__.en.abbr", true);
 pref("extensions.zotero.__addonRef__.ch.abbr", true);
 
-// 学校期刊分类
-pref("extensions.zotero.__addonRef__.swufe", false);
-pref("extensions.zotero.__addonRef__.cufe", false);
-pref("extensions.zotero.__addonRef__.uibe", false);
-pref("extensions.zotero.__addonRef__.sdufe", false);
-pref("extensions.zotero.__addonRef__.xdu", false);
-pref("extensions.zotero.__addonRef__.swjtu", false);
-pref("extensions.zotero.__addonRef__.ruc", false);
-pref("extensions.zotero.__addonRef__.xmu", false);
-pref("extensions.zotero.__addonRef__.sjtu", false);
-pref("extensions.zotero.__addonRef__.fdu", false);
-pref("extensions.zotero.__addonRef__.hhu", false);
-pref("extensions.zotero.__addonRef__.scu", false);
-pref("extensions.zotero.__addonRef__.cqu", false);
-pref("extensions.zotero.__addonRef__.nju", false);
-pref("extensions.zotero.__addonRef__.xju", false);
-pref("extensions.zotero.__addonRef__.cug", false);
-pref("extensions.zotero.__addonRef__.cju", false);
-pref("extensions.zotero.__addonRef__.zju", false);
-pref("extensions.zotero.__addonRef__.cpu", false);
-pref("extensions.zotero.__addonRef__.njau.core", true);
-pref("extensions.zotero.__addonRef__.njau.high.quality", true);
+// 出版物/会议名称列
+pref("extensions.zotero.__addonRef__.pub.conf.name", true);
 // 自定义数据集 custom data
-pref("extensions.zotero.__addonRef__.CoreRankings", false);
-pref("extensions.zotero.__addonRef__.HX", false);
-pref("extensions.zotero.__addonRef__.Scopus", false);
-pref("extensions.zotero.__addonRef__.ABDC", false); //澳大利亚ABDC
-pref("extensions.zotero.__addonRef__.clsci", false);
-pref("extensions.zotero.__addonRef__.ccf_c", true); //better ccf
-pref("extensions.zotero.__addonRef__.ami", false);
-pref("extensions.zotero.__addonRef__.nssf", false);
-pref("extensions.zotero.__addonRef__.swupl", false); //西南政法大学
+pref("extensions.zotero.__addonRef__.caa", true);
+pref("extensions.zotero.__addonRef__.caai", true);
+pref("extensions.zotero.__addonRef__.custom.dataset.codes", "");
 
 // 影响因子
+pref("extensions.zotero.__addonRef__.rank", true);
+pref("extensions.zotero.__addonRef__.partition.column", true);
+pref("extensions.zotero.__addonRef__.if.column", true);
+pref("extensions.zotero.__addonRef__.rating", true);
 pref("extensions.zotero.__addonRef__.jcr.qu", true);
 pref("extensions.zotero.__addonRef__.basic", false);
 pref("extensions.zotero.__addonRef__.updated", true);
 pref("extensions.zotero.__addonRef__.sci.if", true);
-pref("extensions.zotero.__addonRef__.sci.if5", true);
+pref("extensions.zotero.__addonRef__.sci.if5", false);
 pref("extensions.zotero.__addonRef__.ei", true);
 pref("extensions.zotero.__addonRef__.sci.up.top", false);
 pref("extensions.zotero.__addonRef__.sci.up.small", false);
@@ -67,8 +45,9 @@ pref("extensions.zotero.__addonRef__.jci", false);
 pref("extensions.zotero.__addonRef__.ahci", false);
 pref("extensions.zotero.__addonRef__.sciwarn", false);
 pref("extensions.zotero.__addonRef__.esi", false);
-pref("extensions.zotero.__addonRef__.com.if", true);
-pref("extensions.zotero.__addonRef__.agg.if", true);
+pref("extensions.zotero.__addonRef__.com.if", false);
+pref("extensions.zotero.__addonRef__.agg.if", false);
+pref("extensions.zotero.__addonRef__.gs.cites", true);
 pref("extensions.zotero.__addonRef__.summary", false);
 
 pref("extensions.zotero.__addonRef__.bold.star", true);

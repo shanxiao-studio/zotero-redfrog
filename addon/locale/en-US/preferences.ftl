@@ -1,5 +1,6 @@
-# 期刊信息更新设置
-journal-setting = Journal Update Settings
+# General Settings
+general-setting = General Settings
+general-setting-desc = Basic features and update behavior
 pref-secretkey-label = easyScholar Secretkey:
 pref-secretkey-apply-label = Don't have the easyScholar Secretkey yet? Click to register.
 update-empty-extra =
@@ -22,25 +23,49 @@ en-abbr =
 ch-abbr =
     .label = Chinese items
 
-## 分区类型设置、影响因子设置
-ifs-setting = Quartile and IF Settings
+## IF Column Display Settings
+ifs-setting = IF Column Display Settings
+ifs-setting-desc = Checked metrics are shown side by side in the IF column
+pub-conf-name =
+    .label = Publication/Conference Name
+rank =
+    .label = Rank column
+rating =
+    .label = Rating column
 jcr-qu =
     .label = JCR Quartile
-basic =
-    .label = CAS Basic verison
 updated =
     .label = CAS Updated version
 sci-if =
     .label = IF
 sci-if5 =
-    .label = 5 Year IF
+    .label = 5 Year IF (IF5)
 ei =
     .label = EI
 sci-up-top =
     .label = SCI Up Top
-sci-up-small =
-    .label = SCI Up Small
+com-if =
+    .label = Compound IF (Compound)
+agg-if =
+    .label = Comprehensive IF (Comprehensive)
+gs-cites =
+    .label = Show Google Scholar Citation Count
 
+## Rank Settings
+rank-setting = Quartile Column Settings
+rank-setting-desc = Checked items will appear in the quartile column
+rank-cas =
+    .label = CAS Quartile
+rank-cas-top =
+    .label = CAS TOP Quartile
+rank-jcr =
+    .label = JCR Quartile
+rank-ccf =
+    .label = CCF Rank
+rank-caa =
+    .label = CAA Rank
+rank-caai =
+    .label = CAAI Rank
 chjcscd =
     .label = CSCD
 pku-core =
@@ -57,92 +82,43 @@ utd24 =
     .label = UTD24
 ft50 =
     .label = FT50
-ccf =
-    .label = CCF
 fms =
     .label = FMS
 jci =
     .label = JCI
 ahci =
     .label = AHCI
-sciwarn =
-    .label = CAS Warning
 esi =
     .label = ESI
-com-if =
-    .label = Compound IF
-agg-if =
-    .label = Comprehensive IF
 
-## 大学期刊分类
-university = University Journal Category Settings
-njau-core =
-    .label = NJAU Core
-njau-high-quality =
-    .label = NJAU High Quality
-swufe =
-    .label = SWUFE
-cufe =
-    .label = CUFE
-uibe =
-    .label = UIBE
-sdufe =
-    .label = SDUFE
-xdu =
-    .label = XDU
-swjtu =
-    .label = SWJTU
-ruc =
-    .label = RUC
-xmu =
-    .label = XMU
-sjtu =
-    .label = SJTU
-fdu =
-    .label = FDU
-hhu =
-    .label = HHU
-scu =
-    .label = SCU
-cqu =
-    .label = CQU
-nju =
-    .label = NJU
-xju =
-    .label = XJU
-cug =
-    .label = CUG
-cju =
-    .label = CJU
-zju =
-    .label = ZJU
-cpu =
-    .label = CPU
+column-setting = Column Display Settings
+column-setting-desc = Checked options will be shown as item list columns
+col-rating =
+    .label = Rating Column
+col-partition =
+    .label = Quartile Column
+col-pub-conf-name =
+    .label = Publisher/Conference Column
+col-gs-cites =
+    .label = Google Scholar Citation Count Column
+col-if =
+    .label = IF Column
 
 ## 自定义数据集 custom dataset
 custom-data = Custom Dataset
-ami =
-    .label = AMI
-clsci =
-    .label = CLSCI
-ccf_c =
-    .label = better CCF
-nssf =
-    .label = NSSF (National Social Science Fund)
-swupl =
-    .label = SWUPL
-ABDC =
-    .label = ABDC
-Scopus =
-    .label = Scopus
-HX =
-    .label = HX
-CoreRankings =
-    .label = CORE Rankings
+custom-data-desc = Custom dataset rank settings
+caa =
+    .label = CAA (Chinese Association of Automation)
+caai =
+    .label = CAAI (Chinese Association for Artificial Intelligence)
+custom-data-input-label = Custom dataset codes:
+custom-data-input =
+    .placeholder = e.g. ABC, XYZ
 
 
 ## 菜单显示隐藏设置
 menu-setting = Show Toolbox Menu Settings
+menu-setting-desc = Choose which toolbox menu items to show
 bold-star =
     .label = Author Bold and/or Asterisk
 remove-bold =
@@ -176,6 +152,7 @@ menu-sep-2 =
 
 ## 快捷键设置
 shortcut-setting = Shortcut Settings
+shortcut-setting-desc = Enable shortcuts and configure keys
 shortcut-update-journal-info =
     .label = Use shortcut for updating journal information of selected items
 shortcut-update-journal-info-alert =
@@ -198,8 +175,9 @@ shortcut-alt-label = { PLATFORM() ->
     } +
 
 # 关于
-pref-title = Green Frog
+pref-title = Red Frog
 pref-about = About
+pref-about-desc = Add-on info and version
 pref-enable =
     .label = Enable
 pref-help = Build { $version } { $time }

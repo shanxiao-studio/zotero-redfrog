@@ -35,20 +35,6 @@ export default defineConfig({
         outfile: `build/addon/chrome/content/scripts/${pkg.config.addonRef}.js`,
       },
     ],
-    makeUpdateJson: {
-      updates: [
-        {
-          version: "0.13.0",
-          update_link:
-            "https://github.com/redleafnew/zotero-updateifsE/releases/download/0.13.0/greenfrog.xpi",
-          applications: {
-            gecko: {
-              strict_min_version: "60.0",
-            },
-          },
-        },
-      ],
-    },
   },
 
   // If you need to see a more detailed log, uncomment the following line:

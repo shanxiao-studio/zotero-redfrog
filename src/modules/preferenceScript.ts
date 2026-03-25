@@ -53,8 +53,12 @@ async function updatePrefsUI() {
   // with addon.data.prefs.window.document
   // Or bind some events to the elements
   const renderLock = ztoolkit.getGlobal("Zotero").Promise.defer();
+  const prefsWindow = addon.data.prefs?.window;
+  if (!prefsWindow) {
+    return;
+  }
 
-  const tableHelper = new ztoolkit.VirtualizedTable(addon.data.prefs?.window!)
+  const tableHelper = new ztoolkit.VirtualizedTable(prefsWindow)
     .setContainerId(`${config.addonRef}-table-container`)
     .setProp({
       id: `${config.addonRef}-prefs-table`,
@@ -69,14 +73,14 @@ async function updatePrefsUI() {
     .setProp("getRowCount", () => addon.data.prefs?.rows.length || 0)
     .setProp(
       "getRowData",
-      (index) =>
+      (index: number) =>
         addon.data.prefs?.rows[index] || {
           title: "no data",
           detail: "no data",
         },
     )
     // Show a progress window when selection changes
-    .setProp("onSelectionChange", (selection) => {
+    .setProp("onSelectionChange", (selection: any) => {
       new ztoolkit.ProgressWindow(config.addonName)
         .createLine({
           text: `Selected line: ${addon.data.prefs?.rows
@@ -103,7 +107,7 @@ async function updatePrefsUI() {
     // For find-as-you-type
     .setProp(
       "getRowString",
-      (index) => addon.data.prefs?.rows[index].title || "",
+      (index: number) => addon.data.prefs?.rows[index].title || "",
     )
     // Render the table.
     .render(-1, () => {
@@ -122,7 +126,7 @@ function bindPrefEvents() {
     .prefs!.window.document.querySelector(
       `#zotero-prefpane-${config.addonRef}-update-abbr`,
     )
-    ?.addEventListener("command", (e) => {
+    ?.addEventListener("command", (e: Event) => {
       ztoolkit.log(e);
       UIExampleFactory.disableUppJourAbbDot();
     });
@@ -131,6 +135,86 @@ function bindPrefEvents() {
   addon.data
     .prefs!.window.document.querySelector(
       `#zotero-prefpane-${config.addonRef}-jcr-qu`,
+    )
+    ?.addEventListener("command", (e: Event) => {
+      ztoolkit.log(e);
+      UIExampleFactory.registerExtraColumn();
+    });
+
+  // Publication/Conference name
+  addon.data
+    .prefs!.window.document.querySelector(
+      `#zotero-prefpane-${config.addonRef}-pub-conf-name`,
+    )
+    ?.addEventListener("command", (e: Event) => {
+      ztoolkit.log(e);
+      UIExampleFactory.registerExtraColumn();
+    });
+
+  // Rank column
+  addon.data
+    .prefs!.window.document.querySelector(
+      `#zotero-prefpane-${config.addonRef}-rank`,
+    )
+    ?.addEventListener("command", (e) => {
+      ztoolkit.log(e);
+      UIExampleFactory.registerExtraColumn();
+    });
+
+  // Column setting: rating
+  addon.data
+    .prefs!.window.document.querySelector(
+      `#zotero-prefpane-${config.addonRef}-col-rating`,
+    )
+    ?.addEventListener("command", (e) => {
+      ztoolkit.log(e);
+      UIExampleFactory.registerExtraColumn();
+    });
+
+  // Column setting: partition
+  addon.data
+    .prefs!.window.document.querySelector(
+      `#zotero-prefpane-${config.addonRef}-col-partition`,
+    )
+    ?.addEventListener("command", (e) => {
+      ztoolkit.log(e);
+      UIExampleFactory.registerExtraColumn();
+    });
+
+  // Column setting: publication/conference name
+  addon.data
+    .prefs!.window.document.querySelector(
+      `#zotero-prefpane-${config.addonRef}-col-pub-conf-name`,
+    )
+    ?.addEventListener("command", (e) => {
+      ztoolkit.log(e);
+      UIExampleFactory.registerExtraColumn();
+    });
+
+  // Column setting: Google Scholar citations
+  addon.data
+    .prefs!.window.document.querySelector(
+      `#zotero-prefpane-${config.addonRef}-col-gs-cites`,
+    )
+    ?.addEventListener("command", (e) => {
+      ztoolkit.log(e);
+      UIExampleFactory.registerExtraColumn();
+    });
+
+  // Column setting: IF
+  addon.data
+    .prefs!.window.document.querySelector(
+      `#zotero-prefpane-${config.addonRef}-col-if`,
+    )
+    ?.addEventListener("command", (e) => {
+      ztoolkit.log(e);
+      UIExampleFactory.registerExtraColumn();
+    });
+
+  // Rating column
+  addon.data
+    .prefs!.window.document.querySelector(
+      `#zotero-prefpane-${config.addonRef}-rating`,
     )
     ?.addEventListener("command", (e) => {
       ztoolkit.log(e);
@@ -328,281 +412,22 @@ function bindPrefEvents() {
       ztoolkit.log(e);
       UIExampleFactory.registerExtraColumn();
     });
-  // 综合影响因子
+
+  // Google Scholar 引用
   addon.data
     .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-agg-if`,
+      `#zotero-prefpane-${config.addonRef}-gs-cites`,
     )
     ?.addEventListener("command", (e) => {
       ztoolkit.log(e);
       UIExampleFactory.registerExtraColumn();
     });
 
-  // 南农核心
   addon.data
     .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-njau-core`,
+      `#zotero-prefpane-${config.addonRef}-custom-dataset-codes`,
     )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-  // 南农高质量期刊
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-njau-high-quality`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-
-  // swufe
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-swufe`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-  // cufe
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-cufe`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-  // uibe
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-uibe`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-  // sdufe
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-sdufe`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-  // xdu
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-xdu`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-  // swjtu
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-swjtu`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-  // ruc
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-ruc`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-  // xmu
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-xmu`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-  // sjtu
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-sjtu`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-  // fdu
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-fdu`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-  // hhu
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-hhu`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-  // scu
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-scu`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-  // cqu
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-cqu`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-  // nju
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-nju`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-  // xju
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-xju`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-  // cug
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-cug`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-  // cju
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-cju`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-  // zju
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-zju`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-  // cpu
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-cpu`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-
-  // 自定义数据集
-  // CLSCI
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-clsci`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-  //AMI
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-ami`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-  // 国家社科基金
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-nssf`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-  // SWUPL西南政法大学
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-swupl`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-
-  // ABDC
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-ABDC`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-
-  // Scopus
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-Scopus`,
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-
-  // HX
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-HX`
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      UIExampleFactory.registerExtraColumn();
-    });
-
-  // CORE Rankings
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-CoreRankings`
-    )
-    ?.addEventListener("command", (e) => {
+    ?.addEventListener("change", (e) => {
       ztoolkit.log(e);
       UIExampleFactory.registerExtraColumn();
     });

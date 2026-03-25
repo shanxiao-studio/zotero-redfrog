@@ -4,7 +4,7 @@ menuitem-label = 插件模板: 帮助工具样例
 menupopup-label = 插件模板: 弹出菜单
 menuitem-submenulabel = 插件模板：子菜单
 menuitem-filemenulabel = 插件模板: 文件菜单
-prefs-title = 绿青蛙
+prefs-title = 红青蛙
 prefs-table-title = 标题
 prefs-table-detail = 详情
 tabpanel-lib-tab-label = 库标签
@@ -31,6 +31,8 @@ showProfile = 显示Zotero配置文件目录
 showData = 显示Zotero数据文件目录
 proDir = Zotero配置文件目录:
 dataDir = Zotero数据文件目录:
+
+toolbar-update-all = 更新当前分类全部条目
 
 
 # 作者处理
@@ -77,7 +79,7 @@ pubTitleEmpty = 期刊原题目或新题目为空, 请输入。
 successPubTitle = 期刊题目更新成功。
 
 # 影响因子
-inputSecretkey = 请在绿青蛙首选项中输入easyScholar密钥。
+inputSecretkey = 请在红青蛙首选项中输入easyScholar密钥。
 JCR = JCR分区
 IF = 影响因子
 IF5 = 5年影响因子
@@ -95,6 +97,15 @@ AJG = AJG
 UTD24 = UTD24
 FT50 = FT50
 CCF = CCF
+rank = 等级
+partition = 分区
+rating = 评分
+rating-0 = ☆☆☆☆☆
+rating-1 = ★☆☆☆☆
+rating-2 = ★★☆☆☆
+rating-3 = ★★★☆☆
+rating-4 = ★★★★☆
+rating-5 = ★★★★★
 FMS = FMS
 JCI = JCI
 sciwarn = 中科院预警
@@ -102,6 +113,7 @@ esi = ESI
 AHCI = AHCI
 compoundIF = 复合影响因子
 comprehensiveIF =综合影响因子
+GSCitations = 引用数
 njauCore = 南农核心
 njauJour = 南农高质量
 swufe = 西南财经大学
@@ -124,17 +136,8 @@ cju = 长江大学
 zju = 浙江大学
 cpu = 中国药科大学
 
-# 自定义数据集
-ami = AMI
-clsci = CLSCI
-nssf = 国家社科基金
-swupl = 西南政法大学
-ABDC = ABDC
-Scopus = Scopus
-HX = HX
-CoreRankings = CORE评级
-
 summary = 总结
+pubConfName = 出版物/会议名称
 
 upIfsSuccess =
  {$count ->
@@ -143,3 +146,7 @@ upIfsSuccess =
   }
 
 upIfsFail = easyScholar查不到此期刊的等级信息。
+
+update-journal-start = 正在更新期刊数据...
+
+gsCaptchaAlert = Google Scholar 触发了验证码/限流，请在打开的页面完成验证后重试更新。
