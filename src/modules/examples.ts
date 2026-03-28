@@ -53,6 +53,25 @@ function normalizeScholarTitle(raw: string): string {
     .trim();
 }
 
+function extractScholarYear(item: Zotero.Item): string | undefined {
+  const yearRaw =
+    ((item.getField("year") as string) || "").trim() ||
+    ((item.getField("date") as string) || "").trim();
+  return yearRaw.match(/\b(19|20)\d{2}\b/)?.[0];
+}
+
+function extractScholarAuthorKeywords(item: Zotero.Item): string[] {
+  const creators = item.getCreators() || [];
+  return creators
+    .map((creator) => {
+      const lastName = (creator.lastName || "").trim();
+      const name = (creator.name || "").trim();
+      return lastName || name;
+    })
+    .filter((name) => !!name)
+    .slice(0, 3);
+}
+
 export class BasicExampleFactory {
   @example
   static registerNotifier() {
@@ -157,6 +176,78 @@ export class BasicExampleFactory {
 }
 
 export class KeyExampleFactory {
+  private static googleScholarNextRequestAt = 0;
+
+  private static googleScholarCooldownUntil = 0;
+
+  private static googleScholarLastBlockedNoticeAt = 0;
+
+  private static readonly GOOGLE_SCHOLAR_MIN_INTERVAL_MS = 3200;
+
+  private static readonly GOOGLE_SCHOLAR_INTERVAL_JITTER_MS = 2200;
+
+  private static readonly GOOGLE_SCHOLAR_BLOCK_NOTICE_GAP_MS = 120000;
+
+  private static readonly GOOGLE_SCHOLAR_COOLDOWN_SHORT_MS = 2 * 60 * 1000;
+
+  private static readonly GOOGLE_SCHOLAR_COOLDOWN_LONG_MS = 30 * 60 * 1000;
+
+  private static now() {
+    return Date.now();
+  }
+
+  private static isGoogleScholarCoolingDown() {
+    return KeyExampleFactory.googleScholarCooldownUntil > KeyExampleFactory.now();
+  }
+
+  private static getGoogleScholarCooldownRemainingMs() {
+    return Math.max(
+      0,
+      KeyExampleFactory.googleScholarCooldownUntil - KeyExampleFactory.now(),
+    );
+  }
+
+  private static markGoogleScholarCooldown(ms: number, reason: string) {
+    const now = KeyExampleFactory.now();
+    const until = now + Math.max(0, ms);
+    KeyExampleFactory.googleScholarCooldownUntil = Math.max(
+      KeyExampleFactory.googleScholarCooldownUntil,
+      until,
+    );
+    Zotero.debug(
+      `Google Scholar 进入冷却 (${Math.round(ms / 1000)}s)，原因: ${reason}`,
+    );
+  }
+
+  private static maybeNotifyGoogleScholarBlocked(reason: string) {
+    const now = KeyExampleFactory.now();
+    if (
+      now - KeyExampleFactory.googleScholarLastBlockedNoticeAt <
+      KeyExampleFactory.GOOGLE_SCHOLAR_BLOCK_NOTICE_GAP_MS
+    ) {
+      return;
+    }
+    KeyExampleFactory.googleScholarLastBlockedNoticeAt = now;
+    HelperExampleFactory.progressWindow(
+      `Google Scholar 触发限流/验证码，已暂停请求（${reason}）`,
+      "fail",
+    );
+  }
+
+  private static async waitForGoogleScholarRequestSlot() {
+    const now = KeyExampleFactory.now();
+    if (KeyExampleFactory.googleScholarNextRequestAt > now) {
+      await Zotero.Promise.delay(KeyExampleFactory.googleScholarNextRequestAt - now);
+    }
+    const jitter = Math.round(
+      Math.random() * KeyExampleFactory.GOOGLE_SCHOLAR_INTERVAL_JITTER_MS,
+    );
+    KeyExampleFactory.googleScholarNextRequestAt =
+      KeyExampleFactory.now() +
+      KeyExampleFactory.GOOGLE_SCHOLAR_MIN_INTERVAL_MS +
+      jitter;
+  }
+
   // 得到所选条目
   @example
   static getSelectedItems() {
@@ -586,67 +677,54 @@ export class KeyExampleFactory {
   }
 
   @example
-  static buildGoogleScholarSearchUrl(
-    item: Zotero.Item,
-    relaxed = false,
-  ): string | undefined {
+  static buildGoogleScholarQueries(item: Zotero.Item): string[] {
     const titleRaw = (item.getField("title") as string) || "";
     const title = normalizeScholarTitle(titleRaw);
     if (!title) {
-      return;
+      return [];
     }
 
-    const creators = item.getCreators() || [];
-    const authorKeywords = creators
-      .map((creator) => {
-        const lastName = (creator.lastName || "").trim();
-        const name = (creator.name || "").trim();
-        return lastName || name;
-      })
-      .filter((name) => !!name)
-      .slice(0, 3);
+    const authorKeywords = extractScholarAuthorKeywords(item);
+    const year = extractScholarYear(item);
 
-    const yearRaw =
-      ((item.getField("year") as string) || "").trim() ||
-      ((item.getField("date") as string) || "").trim();
-    const year = yearRaw.match(/\b(19|20)\d{2}\b/)?.[0];
+    const strictQueryParts = [`"${title}"`];
+    if (authorKeywords.length > 0) {
+      strictQueryParts.push(authorKeywords.join(" "));
+    }
+    if (year) {
+      strictQueryParts.push(year);
+    }
 
+    const relaxedQueryParts = [title];
+    if (authorKeywords.length > 0) {
+      relaxedQueryParts.push(authorKeywords.join(" "));
+    }
+
+    return Array.from(
+      new Set(
+        [strictQueryParts.join(" "), relaxedQueryParts.join(" "), title]
+          .map((query) => query.trim())
+          .filter((query) => !!query),
+      ),
+    );
+  }
+
+  @example
+  static buildGoogleScholarSearchUrlFromQuery(query: string): string {
     const searchURL = new URL("https://scholar.google.com/scholar");
     searchURL.searchParams.set("hl", "en");
-    searchURL.searchParams.set("num", "1");
-    searchURL.searchParams.set("as_epq", "");
-    searchURL.searchParams.set("as_occt", "title");
-    searchURL.searchParams.set("q", relaxed ? title : `"${title}"`);
-
-    if (!relaxed && authorKeywords.length > 0) {
-      searchURL.searchParams.set("as_sauthors", authorKeywords.join(" "));
-    }
-
-    if (!relaxed && year) {
-      const yearNumber = Number(year);
-      if (!Number.isNaN(yearNumber)) {
-        searchURL.searchParams.set("as_ylo", String(yearNumber - 2));
-        searchURL.searchParams.set("as_yhi", String(yearNumber + 2));
-      }
-    }
-
+    searchURL.searchParams.set("q", query);
+    searchURL.searchParams.set("as_vis", "0");
+    searchURL.searchParams.set("as_sdt", "0,33");
     return searchURL.toString();
   }
 
   @example
-  static hasGoogleScholarRecaptcha(
-    htmlText: string,
-    responseUrl?: string,
-  ): boolean {
+  static hasGoogleScholarCaptcha(htmlText: string, responseUrl?: string): boolean {
     const source = htmlText || "";
     const url = responseUrl || "";
-
-    if (KeyExampleFactory.hasGoogleScholarResults(source)) {
-      return false;
-    }
-
     return (
-      source.includes("google.com/recaptcha/api.js?onload") ||
+      source.includes("google.com/recaptcha") ||
       source.includes('id="gs_captcha_ccl"') ||
       source.includes("/sorry/image") ||
       /our systems have detected unusual traffic/i.test(source) ||
@@ -656,19 +734,7 @@ export class KeyExampleFactory {
   }
 
   @example
-  static hasGoogleScholarResults(htmlText: string): boolean {
-    const source = htmlText || "";
-    return (
-      source.includes('class="gs_r gs_or gs_scl"') ||
-      source.includes('class="gs_fl gs_flb gs_invis"') ||
-      source.includes('class="gs_fl gs_flb"') ||
-      source.includes('class="gs_rt"') ||
-      source.includes('id="gs_res_ccl_mid"')
-    );
-  }
-
-  @example
-  static parseGoogleScholarCitations(htmlText: string): string | undefined {
+  static parseGoogleScholarCitationsFromHtml(htmlText: string): string | undefined {
     if (!htmlText) {
       return;
     }
@@ -686,29 +752,35 @@ export class KeyExampleFactory {
       }
     }
 
-    if (KeyExampleFactory.hasGoogleScholarResults(htmlText)) {
+    if (
+      htmlText.includes('class="gs_r gs_or gs_scl"') ||
+      htmlText.includes('class="gs_rt"')
+    ) {
       return "0";
     }
   }
 
   @example
-  static openGoogleScholarCaptchaWindow(targetUrl: string) {
-    const alertMessage = getString("gsCaptchaAlert");
-    window.alert(alertMessage);
-    Zotero.openInViewer(targetUrl);
-  }
+  static async fetchGoogleScholarCitationsByHttp(
+    query: string,
+  ): Promise<{ citations?: string; blocked?: boolean }> {
+    if (KeyExampleFactory.isGoogleScholarCoolingDown()) {
+      const remainMs = KeyExampleFactory.getGoogleScholarCooldownRemainingMs();
+      Zotero.debug(
+        `Google Scholar 仍在冷却中，跳过请求，剩余 ${Math.round(remainMs / 1000)}s`,
+      );
+      return { blocked: true };
+    }
 
-  @example
-  static async getGoogleScholarCitations(
-    item: Zotero.Item,
-  ): Promise<string | undefined> {
-    const fetchCitation = async (
-      url: string,
-      allowRetry = true,
-    ): Promise<string | null | undefined> => {
-      let resp: any;
+    const url = KeyExampleFactory.buildGoogleScholarSearchUrlFromQuery(query);
+    Zotero.debug(`Google Scholar HTTP 回退查询: ${url}`);
+
+    const maxAttempts = 3;
+    for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
       try {
-        resp = await Zotero.HTTP.request("GET", url, {
+        await KeyExampleFactory.waitForGoogleScholarRequestSlot();
+
+        const resp = await Zotero.HTTP.request("GET", url, {
           successCodes: false,
           headers: {
             Accept:
@@ -716,76 +788,114 @@ export class KeyExampleFactory {
             "Accept-Language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7",
             Referer: "https://scholar.google.com/",
             "User-Agent":
-              "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+              "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
           },
         });
-      } catch (error: any) {
-        resp = error;
-      }
 
-      const status = Number(resp?.status || 0);
-      const responseText = String(resp?.responseText || "");
-      const responseUrl = String(resp?.responseURL || url);
+        const status = Number(resp?.status || 0);
+        const html = String(resp?.responseText || "");
+        const responseUrl = String(resp?.responseURL || url);
+        Zotero.debug(
+          `Google Scholar HTTP 状态: ${status}, attempt: ${attempt}/${maxAttempts}`,
+        );
 
-      if (
-        status === 403 ||
-        status === 429 ||
-        KeyExampleFactory.hasGoogleScholarRecaptcha(responseText, responseUrl)
-      ) {
-        Zotero.debug(`Google Scholar 请求触发验证或限流，状态码: ${status}`);
-        KeyExampleFactory.openGoogleScholarCaptchaWindow(responseUrl);
-        return null;
-      }
-
-      if (status === 200) {
-        if (!KeyExampleFactory.hasGoogleScholarResults(responseText)) {
-          Zotero.debug("Google Scholar 无可解析结果块");
-          return;
+        if (status === 429 || status === 503) {
+          const retryDelay =
+            1500 * Math.pow(2, attempt - 1) + Math.round(Math.random() * 1200);
+          if (attempt < maxAttempts) {
+            KeyExampleFactory.markGoogleScholarCooldown(
+              retryDelay,
+              `HTTP ${status}`,
+            );
+            await Zotero.Promise.delay(retryDelay);
+            continue;
+          }
+          KeyExampleFactory.markGoogleScholarCooldown(
+            KeyExampleFactory.GOOGLE_SCHOLAR_COOLDOWN_SHORT_MS,
+            `HTTP ${status} 达到重试上限`,
+          );
+          KeyExampleFactory.maybeNotifyGoogleScholarBlocked(`HTTP ${status}`);
+          return { blocked: true };
         }
-        return KeyExampleFactory.parseGoogleScholarCitations(responseText);
-      }
 
-      if (status === 503 && allowRetry) {
-        Zotero.debug("Google Scholar 暂时不可用(503)，延迟后重试");
-        await Zotero.Promise.delay(1200);
-        return fetchCitation(url, false);
-      }
+        if (
+          status === 403 ||
+          KeyExampleFactory.hasGoogleScholarCaptcha(html, responseUrl)
+        ) {
+          Zotero.debug("Google Scholar 触发验证码或访问限制，停止当前查询");
+          KeyExampleFactory.markGoogleScholarCooldown(
+            KeyExampleFactory.GOOGLE_SCHOLAR_COOLDOWN_LONG_MS,
+            "验证码/403",
+          );
+          KeyExampleFactory.maybeNotifyGoogleScholarBlocked("验证码/403");
+          return { blocked: true };
+        }
 
-      Zotero.debug(`Google Scholar 请求失败，状态码: ${status}`);
-      return;
-    };
+        if (status !== 200) {
+          return {};
+        }
 
-    try {
-      const strictUrl = KeyExampleFactory.buildGoogleScholarSearchUrl(item);
-      if (!strictUrl) {
-        return;
-      }
+        const parsed = KeyExampleFactory.parseGoogleScholarCitationsFromHtml(html);
+        if (parsed !== undefined) {
+          Zotero.debug(`Google Scholar 引用次数返回: ${parsed}`);
+        } else {
+          Zotero.debug("Google Scholar 未解析到引用次数");
+        }
+        return { citations: parsed };
+      } catch (error: any) {
+        Zotero.debug(`Google Scholar HTTP 查询失败: ${url}`);
+        Zotero.debug(error);
+        if (error?.message) {
+          Zotero.debug(`Google Scholar HTTP 查询失败信息: ${String(error.message)}`);
+        }
 
-      const strictResult = await fetchCitation(strictUrl);
-      if (strictResult === null) {
-        return;
+        if (attempt < maxAttempts) {
+          const retryDelay =
+            1200 * Math.pow(2, attempt - 1) + Math.round(Math.random() * 1200);
+          await Zotero.Promise.delay(retryDelay);
+          continue;
+        }
+        return {};
       }
-      if (strictResult !== undefined) {
-        return strictResult;
-      }
+    }
 
-      const relaxedUrl = KeyExampleFactory.buildGoogleScholarSearchUrl(
-        item,
-        true,
+    return {};
+  }
+
+  @example
+  static async getGoogleScholarCitations(
+    item: Zotero.Item,
+  ): Promise<string | undefined> {
+    if (KeyExampleFactory.isGoogleScholarCoolingDown()) {
+      const remainMs = KeyExampleFactory.getGoogleScholarCooldownRemainingMs();
+      KeyExampleFactory.maybeNotifyGoogleScholarBlocked(
+        `冷却剩余 ${Math.ceil(remainMs / 1000)}s`,
       );
-      if (!relaxedUrl) {
-        return;
-      }
-      const relaxedResult = await fetchCitation(relaxedUrl);
-      if (relaxedResult === null) {
-        return;
-      }
-      return relaxedResult;
-    } catch (error) {
-      Zotero.debug("Google Scholar 引用获取失败");
-      Zotero.debug(error);
       return;
     }
+
+    const queries = KeyExampleFactory.buildGoogleScholarQueries(item);
+    if (queries.length === 0) {
+      Zotero.debug("Google Scholar 查询已跳过：无有效查询词");
+      return;
+    }
+
+    Zotero.debug("Google Scholar 开始执行查询流程");
+    for (const query of queries) {
+      const fallbackResult =
+        await KeyExampleFactory.fetchGoogleScholarCitationsByHttp(query);
+      if (fallbackResult.blocked) {
+        return;
+      }
+      if (fallbackResult.citations !== undefined) {
+        return fallbackResult.citations;
+      }
+
+      await Zotero.Promise.delay(1800 + Math.round(Math.random() * 1400));
+    }
+
+    Zotero.debug("Google Scholar 所有查询均未获取到引用次数");
+    return;
   }
 
   @example
