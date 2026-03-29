@@ -1,6 +1,6 @@
 {
   "name": "redfrog",
-  "version": "2026.3.28",
+  "version": "2026.3.26-beta.1",
   "description": "Zotero plugin for update journal information from easyScholar",
   "config": {
     "addonName": "Red Frog",
