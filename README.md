@@ -1,6 +1,6 @@
 # Red Frog
 
-[![zotero target version](https://img.shields.io/badge/Zotero-7.*/8.*-green?style=flat-square&logo=zotero&logoColor=CC2936)](https://www.zotero.org)
+[![zotero target version](https://img.shields.io/badge/Zotero-7.*%2F8.*%2F9.*%2F10.*-green?style=flat-square&logo=zotero&logoColor=CC2936)](https://www.zotero.org)
 [![version](https://img.shields.io/github/package-json/v/shanxiao-studio/zotero-redfrog?style=flat-square)](https://github.com/shanxiao-studio/zotero-redfrog/releases/)
 [![download number](https://img.shields.io/github/downloads/shanxiao-studio/zotero-redfrog/latest/total?style=flat-square)](https://github.com/shanxiao-studio/zotero-redfrog/releases/)
 [![license](https://img.shields.io/github/license/shanxiao-studio/zotero-redfrog?style=flat-square)](#license)

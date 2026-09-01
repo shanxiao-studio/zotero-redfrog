@@ -44,6 +44,56 @@ function parseCustomDatasetCodes(raw: unknown): string[] {
   return Array.from(new Set(codes.map((code) => code.toUpperCase())));
 }
 
+type ZoteroCollectionLike = {
+  getChildItems?: () => Zotero.Item[];
+};
+
+/**
+ * Zotero 10 supports multiple selected collections. Keep the singular
+ * getter as a fallback for Zotero 7-9.
+ */
+function getSelectedCollections(): ZoteroCollectionLike[] {
+  const pane = ZoteroPane as any;
+  if (typeof pane.getSelectedCollections === "function") {
+    const collections = pane.getSelectedCollections();
+    return Array.isArray(collections)
+      ? collections.filter(
+          (collection): collection is ZoteroCollectionLike =>
+            !!collection && typeof collection.getChildItems === "function",
+        )
+      : [];
+  }
+
+  if (typeof pane.getSelectedCollection === "function") {
+    const collection = pane.getSelectedCollection();
+    return collection && typeof collection.getChildItems === "function"
+      ? [collection]
+      : [];
+  }
+
+  return [];
+}
+
+function getCollectionItems(collections: ZoteroCollectionLike[]): Zotero.Item[] {
+  const itemsByID = new Map<string, Zotero.Item>();
+  for (const collection of collections) {
+    for (const item of collection.getChildItems?.() || []) {
+      if (!item || item.id == null) {
+        continue;
+      }
+      const itemID = String(item.id);
+      if (!itemsByID.has(itemID)) {
+        itemsByID.set(itemID, item);
+      }
+    }
+  }
+  return Array.from(itemsByID.values());
+}
+
+function getSelectedCollectionItems(): Zotero.Item[] {
+  return getCollectionItems(getSelectedCollections());
+}
+
 function normalizeScholarTitle(raw: string): string {
   return raw
     .replace(/<[^>]*>/g, " ")
@@ -258,8 +308,12 @@ export class KeyExampleFactory {
   @example
   static async setExtraCol() {
     const itemsView = ZoteroPane.itemsView;
-    let items: Zotero.Item[] | undefined;
-    if (itemsView) {
+    const selectedCollections = getSelectedCollections();
+    let items: Zotero.Item[] =
+      selectedCollections.length > 0
+        ? getCollectionItems(selectedCollections)
+        : [];
+    if (selectedCollections.length === 0 && itemsView) {
       if (typeof itemsView.getVisibleItems === "function") {
         items = itemsView.getVisibleItems();
       } else if (typeof itemsView.getSortedItems === "function") {
@@ -277,10 +331,6 @@ export class KeyExampleFactory {
           }
         }
       }
-    }
-    if (!items || items.length === 0) {
-      const collection = ZoteroPane.getSelectedCollection();
-      items = collection?.getChildItems();
     }
     if (!items || items.length === 0) {
       HelperExampleFactory.progressWindow(getString("zeroItem"), "fail");
@@ -1079,8 +1129,7 @@ export class KeyExampleFactory {
   //分类右击更新信息
   @example
   static async upMetaCol() {
-    const collection = ZoteroPane.getSelectedCollection();
-    const items = collection?.getChildItems();
+    const items = getSelectedCollectionItems();
     await KeyExampleFactory.upMeta(items);
   }
   //条目右键更新信息
@@ -1372,7 +1421,7 @@ export class KeyExampleFactory {
               `&PageName=defaultresult&DBCode=CFLS&KuaKuCodes=CJFQ%2CCCND%2CCIPD%2CCDMD%2CBDZK%2CCISD%2CSNAD%2CCCJD%2CGXDB_SECTION%2CCJFN%2CCCVD` +
               `&CurPage=1&RecordsCntPerPage=20&CurDisplayMode=listmode&CurrSortField=RELEVANT&CurrSortFieldType=desc&IsSentenceSearch=false&Subject=`;
 
-            function getCookieSandbox() {
+            function getCookieRequestContext() {
               const cookieData = `Ecp_ClientId=3210724131801671689;
             cnkiUserKey=2bf7144a-ddf6-3d32-afb8-d4bf82473d9f;
             RsPerPage=20;
@@ -1391,8 +1440,59 @@ export class KeyExampleFactory {
               const userAgent =
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.56";
               const url = "https://cnki.net/";
-              // @ts-ignore - Plugin instance is not typed
-              return new Zotero.CookieSandbox("", url, cookieData, userAgent);
+              const http = Zotero.HTTP as any;
+              if (typeof http.newCookieContext === "function") {
+                const cookieContext = http.newCookieContext();
+                try {
+                  const originAttributes = {
+                    userContextId: cookieContext.id,
+                  };
+                  const expiry = Math.floor(Date.now() / 1000) + 24 * 60 * 60;
+                  for (const rawCookie of cookieData.split(";")) {
+                    const separator = rawCookie.indexOf("=");
+                    if (separator <= 0) {
+                      continue;
+                    }
+                    const name = rawCookie.slice(0, separator).trim();
+                    const value = rawCookie.slice(separator + 1).trim();
+                    Services.cookies.add(
+                      ".cnki.net",
+                      "/",
+                      name,
+                      value,
+                      false,
+                      false,
+                      false,
+                      expiry,
+                      originAttributes,
+                      Ci.nsICookie.SAMESITE_UNSET,
+                      Ci.nsICookie.SCHEME_HTTPS,
+                    );
+                  }
+                  return {
+                    requestOptions: { userContextId: cookieContext.id },
+                    userAgent,
+                    dispose: () => cookieContext.dispose(),
+                  };
+                } catch (error) {
+                  cookieContext.dispose();
+                  throw error;
+                }
+              }
+
+              // @ts-ignore - CookieSandbox was removed in Zotero 10
+              return {
+                requestOptions: {
+                  cookieSandbox: new Zotero.CookieSandbox(
+                    "",
+                    url,
+                    cookieData,
+                    userAgent,
+                  ),
+                },
+                userAgent,
+                dispose: () => undefined,
+              };
             }
 
             const requestHeaders = {
@@ -1425,12 +1525,20 @@ export class KeyExampleFactory {
               const html = parser.parseFromString(responseText, "text/html");
               return html;
             }
-            const resp = await Zotero.HTTP.request("POST", postUrl, {
-              headers: requestHeaders,
-              cookieSandbox: getCookieSandbox(),
-              body: PostDATA,
-            });
-            return getHtml(resp.responseText);
+            const cookieContext = getCookieRequestContext();
+            try {
+              const resp = await Zotero.HTTP.request("POST", postUrl, {
+                headers: {
+                  ...requestHeaders,
+                  "User-Agent": cookieContext.userAgent,
+                },
+                ...cookieContext.requestOptions,
+                body: PostDATA,
+              });
+              return getHtml(resp.responseText);
+            } finally {
+              cookieContext.dispose();
+            }
           }
           function updateField(field: any, newItem: any, oldItem: Zotero.Item) {
             const newFieldValue = newItem[field],
@@ -1499,8 +1607,7 @@ export class KeyExampleFactory {
             await applyOpenAlexFallback(item, title, doi);
             continue;
           }
-          // @ts-ignore - loadDocuments exists in Zotero runtime but is missing from TS definitions
-          Zotero.HTTP.loadDocuments(url, async function (doc: any) {
+          await (Zotero.HTTP as any).processDocuments(url, async function (doc: any) {
             const translate = new Zotero.Translate.Web();
             translate.setDocument(doc);
             translate.setTranslator("5c95b67b-41c5-4f55-b71a-48d5d7183063");
@@ -1617,7 +1724,7 @@ export class UIExampleFactory {
   // 是否显示菜单函数 类型为期刊才显示可用
   // 是否显示分类右键菜单 隐藏
   static displayColMenuitem() {
-    const collection = ZoteroPane.getSelectedCollection(),
+    const collections = getSelectedCollections(),
       menuUpIFsCol = document.getElementById(
         `zotero-collectionmenu-${config.addonRef}-upifs`,
       ), // 删除分类及附件菜单
@@ -1627,18 +1734,16 @@ export class UIExampleFactory {
 
     // 非正常文件夹，如我的出版物、重复条目、未分类条目、回收站，为false，此时返回值为true，禁用菜单
     // 两个！！转表达式为逻辑值
-    let showmenuUpIFsCol = !!collection;
-    let showmenuUpMetaCol = !!collection;
+    let showmenuUpIFsCol = collections.length > 0;
+    let showmenuUpMetaCol = collections.length > 0;
 
-    if (collection) {
+    if (collections.length > 0) {
       // 如果是正常分类才显示
-      const items = collection.getChildItems();
+      const items = getCollectionItems(collections);
       showmenuUpIFsCol = items.some((item) => UIExampleFactory.checkItem(item)); //检查是否为期刊或会议论文
       showmenuUpMetaCol = items.some((item) =>
         UIExampleFactory.checkItemMeta(item),
       ); // 更新元数据 中文有题目，英文检查是否有DOI
-    } else {
-      showmenuUpIFsCol = false;
     } // 检查分类是否有附件及是否为正常分类
     menuUpIFsCol?.setAttribute("disabled", String(!showmenuUpIFsCol)); // 禁用更新期刊信息
     menuUpMeta?.setAttribute("disabled", String(!showmenuUpMetaCol)); // 禁用更新元数据
