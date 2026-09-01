@@ -26,16 +26,19 @@ jobs:
         with:
           node-version: 20
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Install deps
-        run: npm install -f
+        run: pnpm install --frozen-lockfile
 
       - name: Build
         run: |
-          npm run build
+          pnpm build
 
       - name: Release to GitHub
         run: |
-          npm run release
+          pnpm release
           sleep 1s
 
       - name: Notify release
