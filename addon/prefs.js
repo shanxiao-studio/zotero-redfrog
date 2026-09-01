@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 pref("extensions.zotero.__addonRef__.secretkey", "");
+pref("extensions.zotero.__addonRef__.openalex.api.key", "");
 // 期刊缩写
 pref("extensions.zotero.__addonRef__.update.empty.extra", false);
 pref("extensions.zotero.__addonRef__.add.update", false);

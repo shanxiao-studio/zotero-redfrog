@@ -40,6 +40,24 @@
       <!-- 空格 -->
       <!-- <label value="  "></label> -->
     </hbox>
+    <hbox align="center">
+      <html:label
+        style="width: 145px"
+        for="zotero-prefpane-__addonRef__-openalex-api-key"
+        data-l10n-id="pref-openalex-key-label"
+      >
+      </html:label>
+      <html:input
+        type="password"
+        id="zotero-prefpane-__addonRef__-openalex-api-key"
+        value=""
+        width="500"
+        preference="extensions.zotero.__addonRef__.openalex.api.key"
+        size="40"
+        style="margin-right: 15px"
+      >
+      </html:input>
+    </hbox>
     <vbox class="indented-pref">
       <hbox align="center">
         <label
@@ -47,6 +65,14 @@
           is="zotero-text-link"
           href="https://easyscholar.cc/"
           style="margin-top: 8px; margin-bottom: 8px"
+        ></label>
+      </hbox>
+      <hbox align="center">
+        <label
+          data-l10n-id="pref-openalex-key-apply-label"
+          is="zotero-text-link"
+          href="https://openalex.org/settings/api"
+          style="margin-top: 2px; margin-bottom: 8px"
         ></label>
       </hbox>
     </vbox>

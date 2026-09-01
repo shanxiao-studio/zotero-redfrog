@@ -10,7 +10,7 @@ prefs-table-detail = 详情
 tabpanel-lib-tab-label = 库标签
 tabpanel-reader-tab-label = 阅读器标签
 
-upifs = 从easyScholar更新期刊信息
+upifs = 更新期刊信息
 upmeta= 更新条目元数据
 toolbox = 工具箱
 cleanExtra = 清空所选项的“其他”字段…
@@ -100,6 +100,7 @@ CCF = CCF
 rank = 等级
 partition = 分区
 rating = 评分
+rating-menu = 为条目评分
 rating-0 = ☆☆☆☆☆
 rating-1 = ★☆☆☆☆
 rating-2 = ★★☆☆☆
@@ -146,6 +147,13 @@ upIfsSuccess =
   }
 
 upIfsFail = easyScholar查不到此期刊的等级信息。
+
+upMetaSuccess =
+ {$count ->
+   [one] 所选1个条目的元数据更新成功。
+  *[other] 所选{ $count }个条目的元数据更新成功。
+  }
+upMetaFail = 未找到可更新的元数据，或更新失败。
 
 update-journal-start = 正在更新期刊数据...
 

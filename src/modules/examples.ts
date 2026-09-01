@@ -1099,6 +1099,236 @@ export class KeyExampleFactory {
   static async upMeta(items: any) {
     // var items = KeyExampleFactory.getSelectedItems();
     // var item = items[0];
+    if (!items || items.length === 0) {
+      HelperExampleFactory.progressWindow(getString("zeroItem"), "fail");
+      return;
+    }
+
+    const normalizeDOI = (raw: unknown) =>
+      String(raw || "")
+        .trim()
+        .replace(/^https?:\/\/(dx\.)?doi\.org\//i, "")
+        .replace(/^doi:/i, "")
+        .trim()
+        .toLowerCase();
+
+    const normalizeTitleForCompare = (raw: unknown) =>
+      String(raw || "")
+        .toLowerCase()
+        .replace(/<[^>]*>/g, " ")
+        .replace(/[^a-z0-9\u4e00-\u9fa5]+/gi, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+
+    const extractAbstractFromInvertedIndex = (index: any): string | undefined => {
+      if (!index || typeof index !== "object") {
+        return undefined;
+      }
+      const pairs: Array<[string, number]> = [];
+      for (const [token, positions] of Object.entries(index)) {
+        if (!Array.isArray(positions)) {
+          continue;
+        }
+        for (const pos of positions) {
+          if (typeof pos === "number") {
+            pairs.push([token, pos]);
+          }
+        }
+      }
+      if (!pairs.length) {
+        return undefined;
+      }
+      pairs.sort((a, b) => a[1] - b[1]);
+      return pairs.map(([token]) => token).join(" ");
+    };
+
+    const parseOpenAlexAuthor = (displayName: string) => {
+      const normalized = String(displayName || "").trim();
+      if (!normalized) {
+        return null;
+      }
+      if (normalized.includes(",")) {
+        const [lastName, firstName] = normalized
+          .split(",")
+          .map((part) => part.trim());
+        return {
+          creatorType: "author",
+          firstName: firstName || "",
+          lastName: lastName || normalized,
+        };
+      }
+      const nameParts = normalized.split(/\s+/);
+      if (nameParts.length === 1) {
+        return {
+          creatorType: "author",
+          name: normalized,
+        };
+      }
+      return {
+        creatorType: "author",
+        firstName: nameParts.slice(0, -1).join(" "),
+        lastName: nameParts[nameParts.length - 1],
+      };
+    };
+
+    const hasMissingMetadataField = (item: Zotero.Item) => {
+      const fields = [
+        "publicationTitle",
+        "date",
+        "volume",
+        "issue",
+        "pages",
+        "ISSN",
+        "url",
+        "abstractNote",
+      ];
+      return fields.some((field) => !String(item.getField(field) || "").trim());
+    };
+
+    const applyOpenAlexFallback = async (
+      item: Zotero.Item,
+      rawTitle: unknown,
+      rawDoi: unknown,
+    ) => {
+      const selectFields = [
+        "title",
+        "doi",
+        "publication_year",
+        "biblio",
+        "authorships",
+        "abstract_inverted_index",
+        "primary_location",
+      ].join(",");
+
+      const requestOpenAlex = async (params: Record<string, string>) => {
+        const queryParams: Record<string, string> = { ...params };
+        const openalexApiKey = String(getPref("openalex.api.key") || "").trim();
+        if (openalexApiKey) {
+          queryParams.api_key = openalexApiKey;
+        }
+        const query = new URLSearchParams(queryParams);
+        const url = `https://api.openalex.org/works?${query.toString()}`;
+        const resp = await Zotero.HTTP.request("GET", url, {
+          headers: { Accept: "application/json" },
+        });
+        return JSON.parse(resp.responseText || "{}");
+      };
+
+      const pickFromSearchResults = (results: any[], title: string) => {
+        if (!results?.length) {
+          return undefined;
+        }
+        const normalizedTarget = normalizeTitleForCompare(title);
+        if (!normalizedTarget) {
+          return results[0];
+        }
+        const exactMatch = results.find(
+          (result) =>
+            normalizeTitleForCompare(result?.title) === normalizedTarget,
+        );
+        if (exactMatch) {
+          return exactMatch;
+        }
+        const containsMatch = results.find((result) => {
+          const candidate = normalizeTitleForCompare(result?.title);
+          return (
+            candidate.includes(normalizedTarget) ||
+            normalizedTarget.includes(candidate)
+          );
+        });
+        return containsMatch || results[0];
+      };
+
+      try {
+        const title = String(rawTitle || item.getField("title") || "").trim();
+        const doi = normalizeDOI(rawDoi || item.getField("DOI"));
+        let work: any;
+
+        if (doi) {
+          const doiData = await requestOpenAlex({
+            filter: `doi:${doi}`,
+            per_page: "1",
+            select: selectFields,
+          });
+          work = doiData?.results?.[0];
+        }
+
+        if (!work && title) {
+          const titleData = await requestOpenAlex({
+            search: title,
+            per_page: "5",
+            select: selectFields,
+          });
+          work = pickFromSearchResults(titleData?.results || [], title);
+        }
+
+        if (!work) {
+          return false;
+        }
+
+        let changed = false;
+        const setIfMissing = (field: string, value: unknown) => {
+          const currentValue = String(item.getField(field) || "").trim();
+          const nextValue = String(value || "").trim();
+          if (!currentValue && nextValue) {
+            item.setField(field, nextValue);
+            changed = true;
+          }
+        };
+
+        if ((item.getCreators() || []).length === 0) {
+          const creators = (work?.authorships || [])
+            .map((authorship: any) =>
+              parseOpenAlexAuthor(authorship?.author?.display_name || ""),
+            )
+            .filter((creator: any) => !!creator);
+          if (creators.length) {
+            item.setCreators(creators);
+            changed = true;
+          }
+        }
+
+        setIfMissing("title", work?.title);
+        setIfMissing(
+          "publicationTitle",
+          work?.primary_location?.source?.display_name,
+        );
+        setIfMissing("volume", work?.biblio?.volume);
+        setIfMissing("issue", work?.biblio?.issue);
+        const firstPage = String(work?.biblio?.first_page || "").trim();
+        const lastPage = String(work?.biblio?.last_page || "").trim();
+        setIfMissing(
+          "pages",
+          firstPage && lastPage ? `${firstPage}-${lastPage}` : firstPage || lastPage,
+        );
+        setIfMissing("date", work?.publication_year);
+        setIfMissing(
+          "ISSN",
+          work?.primary_location?.source?.issn_l ||
+            work?.primary_location?.source?.issn?.[0],
+        );
+        setIfMissing(
+          "url",
+          work?.primary_location?.landing_page_url ||
+            work?.primary_location?.pdf_url,
+        );
+        setIfMissing("DOI", normalizeDOI(work?.doi));
+        setIfMissing(
+          "abstractNote",
+          extractAbstractFromInvertedIndex(work?.abstract_inverted_index),
+        );
+
+        if (changed) {
+          await item.saveTx();
+          Zotero.debug("OpenAlex fallback 更新了缺失元数据字段");
+        }
+        return changed;
+      } catch (error) {
+        Zotero.debug(`OpenAlex fallback 请求失败: ${error}`);
+        return false;
+      }
+    };
+
     let n = 0;
     const pattern = new RegExp("[\u4E00-\u9FA5]+");
     for (const item of items) {
@@ -1209,7 +1439,7 @@ export class KeyExampleFactory {
               oldItem.setField(field, newFieldValue);
             }
           }
-          function updateINFO(newItem: any, oldItemID: any) {
+          async function updateINFO(newItem: any, oldItemID: any) {
             const oldItem = Zotero.Items.get(oldItemID);
             oldItem.setCreators(newItem["creators"]);
             // 可根据下述网址增减需要更新的Field.
@@ -1232,7 +1462,7 @@ export class KeyExampleFactory {
             for (const field of fields) {
               updateField(field, newItem, oldItem);
             }
-            oldItem.saveTx();
+            await oldItem.saveTx();
             Zotero.debug("succeeded!");
           }
           //中文条目更新函数
@@ -1266,8 +1496,8 @@ export class KeyExampleFactory {
             popw.addDescription(`文献：${title}`);
             popw.show();
             popw.startCloseTimer(5 * 1000);
-
-            return;
+            await applyOpenAlexFallback(item, title, doi);
+            continue;
           }
           // @ts-ignore - loadDocuments exists in Zotero runtime but is missing from TS definitions
           Zotero.HTTP.loadDocuments(url, async function (doc: any) {
@@ -1276,54 +1506,76 @@ export class KeyExampleFactory {
             translate.setTranslator("5c95b67b-41c5-4f55-b71a-48d5d7183063");
             const items = await translate.translate({ libraryID: false });
             if (items.length == 0) return;
-            updateINFO(items[0], ItemID);
+            await updateINFO(items[0], ItemID);
+            const updatedItem = Zotero.Items.get(ItemID);
+            if (hasMissingMetadataField(updatedItem)) {
+              await applyOpenAlexFallback(
+                updatedItem,
+                updatedItem.getField("title"),
+                updatedItem.getField("DOI"),
+              );
+            }
           });
         } else if (lan == "en-US") {
           //英文条目
+          let needsOpenAlexFallback = !doi;
           if (doi != "") {
-            const identifier = {
-              itemType: "journalArticle",
-              DOI: item.getField("DOI"),
-            };
-            const translate = new Zotero.Translate.Search();
-            translate.setIdentifier(identifier);
-            const translators = await translate.getTranslators();
-            translate.setTranslator(translators);
-            const newItems = await translate.translate({ libraryID: false });
-            if (newItems.length == 0) continue;
-            const newItem = newItems[0];
+            try {
+              const identifier = {
+                itemType: "journalArticle",
+                DOI: item.getField("DOI"),
+              };
+              const translate = new Zotero.Translate.Search();
+              translate.setIdentifier(identifier);
+              const translators = await translate.getTranslators();
+              translate.setTranslator(translators);
+              const newItems = await translate.translate({ libraryID: false });
+              if (newItems.length == 0) {
+                needsOpenAlexFallback = true;
+              } else {
+                const newItem = newItems[0];
 
-            function update(field: any) {
-              const newFieldValue = newItem[field],
-                oldFieldValue = item.getField(field);
-              if (newFieldValue && newFieldValue !== oldFieldValue) {
-                item.setField(field, newFieldValue);
+                function update(field: any) {
+                  const newFieldValue = newItem[field],
+                    oldFieldValue = item.getField(field);
+                  if (newFieldValue && newFieldValue !== oldFieldValue) {
+                    item.setField(field, newFieldValue);
+                  }
+                }
+
+                item.setCreators(newItem["creators"]);
+
+                // 可根据下述网址增减需要更新的Field.
+                // https://www.zotero.org/support/dev/client_coding/javascript_api/search_fields
+
+                const fields = [
+                  "title",
+                  "publicationTitle",
+                  "journalAbbreviation",
+                  "volume",
+                  "issue",
+                  "date",
+                  "pages",
+                  "issue",
+                  "ISSN",
+                  "url",
+                  "abstractNote",
+                ];
+
+                for (const field of fields) {
+                  update(field);
+                }
+
+                await item.saveTx();
+                needsOpenAlexFallback = hasMissingMetadataField(item);
               }
+            } catch (error) {
+              Zotero.debug(`英文元数据 translator 失败，转 OpenAlex fallback: ${error}`);
+              needsOpenAlexFallback = true;
             }
-            item.setCreators(newItem["creators"]);
-
-            // 可根据下述网址增减需要更新的Field.
-            // https://www.zotero.org/support/dev/client_coding/javascript_api/search_fields
-
-            const fields = [
-              "title",
-              "publicationTitle",
-              "journalAbbreviation",
-              "volume",
-              "issue",
-              "date",
-              "pages",
-              "issue",
-              "ISSN",
-              "url",
-              "abstractNote",
-            ];
-
-            for (const field of fields) {
-              update(field);
-            }
-
-            await item.saveTx();
+          }
+          if (needsOpenAlexFallback) {
+            await applyOpenAlexFallback(item, title, doi);
           }
         }
         n++;
@@ -1332,12 +1584,12 @@ export class KeyExampleFactory {
     }
     if (n > 0) {
       HelperExampleFactory.progressWindow(
-        getString("upIfsSuccess", { args: { count: n } }),
+        getString("upMetaSuccess", { args: { count: n } }),
         "success",
       );
-      // Zotero.debug('okkkk' + getString('upIfsSuccess', { args: { count: n } }));
+      // Zotero.debug('okkkk' + getString('upMetaSuccess', { args: { count: n } }));
     } else {
-      HelperExampleFactory.progressWindow(`${getString("upIfsFail")}`, "fail");
+      HelperExampleFactory.progressWindow(`${getString("upMetaFail")}`, "fail");
     }
     // var whiteSpace = HelperExampleFactory.whiteSpace();
     // HelperExampleFactory.progressWindow(`${n}${whiteSpace}${getString('upIfsSuccess')}`, 'success')
@@ -1449,7 +1701,8 @@ export class UIExampleFactory {
         const doi = item.getField("DOI");
         const lan = pattern.test(title) ? "zh-CN" : "en-US";
         if (
-          Zotero.ItemTypes.getName(item.itemTypeID) == "journalArticle" // 文献类型必须为期刊
+          Zotero.ItemTypes.getName(item.itemTypeID) == "journalArticle" || // 文献类型为期刊
+          Zotero.ItemTypes.getName(item.itemTypeID) == "conferencePaper" // 或会议论文
         ) {
           if (lan == "zh-CN") {
             //中文条目
@@ -1493,7 +1746,7 @@ export class UIExampleFactory {
   @example
   static registerRightClickMenuItem() {
     const menuIconUpIFs = `chrome://${config.addonRef}/content/icons/favicon@0.5x.png`;
-    const menuIconUpMeta = `chrome://${config.addonRef}/content/icons/upmeta.png`;
+    const menuIconUpMeta = `chrome://${config.addonRef}/content/icons/favicon@0.5x.png`;
     // ztoolkit.Menu.register("item", {
     //   tag: "menuseparator",
     // });
@@ -1549,7 +1802,8 @@ export class UIExampleFactory {
     ztoolkit.Menu.register("item", {
       tag: "menu",
       id: `zotero-itemmenu-${config.addonRef}-rating`,
-      label: getString("rating"),
+      label: getString("rating-menu"),
+      icon: menuIconUpIFs,
       children: [
         {
           tag: "menuitem",

@@ -10,7 +10,7 @@ prefs-table-detail = Detail
 tabpanel-lib-tab-label = Lib Tab
 tabpanel-reader-tab-label = Reader Tab
 
-upifs = Update Journal Information from easyScholar
+upifs = Update Journal Information
 upmeta= Update Item Metadata
 toolbox = Toolbox
 cleanExtra = Empty "Extra" Field of selected…
@@ -97,6 +97,7 @@ CCF = CCF
 rank = Rank
 partition = Quartile
 rating = Rating
+rating-menu = Rate Item
 rating-0 = ☆☆☆☆☆
 rating-1 = ★☆☆☆☆
 rating-2 = ★★☆☆☆
@@ -141,6 +142,13 @@ upIfsSuccess =
   *[other] Journal information of the selected { $count } items updated sucessfully.
   }
 upIfsFail = Could not Retrive this journal information from easyScholar.
+
+upMetaSuccess =
+ {$count ->
+   [one] Metadata of the selected 1 item updated successfully.
+  *[other] Metadata of the selected { $count } items updated successfully.
+  }
+upMetaFail = No updatable metadata found, or metadata update failed.
 
 update-journal-start = Updating journal data...
 

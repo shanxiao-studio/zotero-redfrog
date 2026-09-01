@@ -8,6 +8,7 @@ declare namespace _ZoteroTypes {
   interface Prefs {
     PluginPrefsMap: {
       "secretkey": string;
+      "openalex.api.key": string;
       "update.empty.extra": boolean;
       "add.update": boolean;
       "add.upmeta": boolean;
